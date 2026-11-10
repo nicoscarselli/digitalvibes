@@ -324,7 +324,7 @@
     });
   }
 
-  const assessment = document.querySelector("#digital-assessment");
+  const assessment = document.querySelector("#digital-assessment, #diagnostico");
   if (assessment) {
     const dimensions = [
       {
@@ -400,6 +400,77 @@
         action: "Enable multi-factor authentication on critical accounts, review who has access, and verify a recent backup."
       }
     ];
+    if (!isEnglish) {
+      const spanishDimensions = [
+        {
+          name: "Base digital",
+          questions: [
+            "¿Qué tan clara está la propuesta de valor digital de tu negocio y a quién se dirige?",
+            "¿Qué tan conectados y actualizados están tu sitio web, tus analíticas y tus herramientas digitales principales?",
+            "¿Con qué frecuencia usas datos confiables para tomar decisiones de negocio y marketing?"
+          ],
+          strength: "Tu base digital ofrece una plataforma clara y confiable para impulsar el crecimiento.",
+          opportunity: "Aclara tu posicionamiento y conecta tus herramientas digitales principales antes de escalar.",
+          action: "Mapea el recorrido de tus clientes, revisa tu sitio y tus analíticas, y define algunos indicadores clave."
+        },
+        {
+          name: "Generación de demanda",
+          questions: [
+            "¿Con qué constancia publicas contenido útil para las personas a las que quieres llegar?",
+            "¿Qué tan sistemáticamente atraes potenciales clientes mediante búsquedas, redes sociales o publicidad?",
+            "¿Qué tan bien mides qué canales y campañas generan oportunidades de negocio valiosas?"
+          ],
+          strength: "Tu estrategia de demanda construye un camino constante hacia audiencias relevantes.",
+          opportunity: "Define un plan enfocado de contenidos y canales, y mide la calidad de las oportunidades, no solo el alcance.",
+          action: "Elige una audiencia prioritaria, establece una frecuencia de publicación y mide las oportunidades por canal."
+        },
+        {
+          name: "Conversión",
+          questions: [
+            "¿Qué tan fácil es para un cliente potencial dar el siguiente paso en tu sitio web?",
+            "¿Con qué constancia haces seguimiento de nuevos contactos y registras su avance?",
+            "¿Con qué frecuencia pruebas y mejoras tus páginas, formularios o proceso de venta?"
+          ],
+          strength: "Tu proceso de conversión transforma la atención digital en acciones concretas de tus clientes.",
+          opportunity: "Simplifica tus páginas clave y establece un seguimiento de oportunidades claro, oportuno y medible.",
+          action: "Revisa tu página más importante, elimina su principal fricción y asigna quién hará el seguimiento."
+        },
+        {
+          name: "Fidelización",
+          questions: [
+            "¿Con qué constancia mantienes el contacto después de la primera compra o proyecto?",
+            "¿Cómo recoges y aprovechas las opiniones, reseñas o señales de satisfacción de tus clientes?",
+            "¿Qué tan bien impulsas nuevas compras, recomendaciones o relaciones a largo plazo?"
+          ],
+          strength: "Tus relaciones con clientes crean una base sólida para nuevas compras y recomendaciones.",
+          opportunity: "Diseña una experiencia posterior a la compra y usa las opiniones para mejorar la fidelización.",
+          action: "Planifica un contacto después de la compra, pide opiniones e identifica un motivo valioso para volver."
+        },
+        {
+          name: "IA y automatización",
+          questions: [
+            "¿Qué tan bien identificaste las tareas repetitivas que podrían mejorarse con automatización?",
+            "¿Con qué frecuencia usa tu equipo herramientas de IA en procesos claros y supervisados?",
+            "¿Cómo verificas que la IA y la automatización ahorren tiempo sin afectar la calidad ni la confianza?"
+          ],
+          strength: "Tu equipo aplica IA y automatización con criterio para mejorar el trabajo cotidiano.",
+          opportunity: "Empieza con un proceso repetitivo e incorpora controles de calidad, privacidad y revisión humana.",
+          action: "Elige una tarea repetitiva de bajo riesgo, documenta sus pasos y prueba una automatización supervisada."
+        },
+        {
+          name: "Seguridad digital",
+          questions: [
+            "¿Con qué constancia usas contraseñas seguras y autenticación multifactor en las cuentas del negocio?",
+            "¿Qué tan bien gestionas los accesos, las copias de seguridad y las actualizaciones de tus herramientas?",
+            "¿Qué tan preparado está tu equipo para detectar mensajes sospechosos y responder a un incidente digital?"
+          ],
+          strength: "Tus prácticas de seguridad ayudan a proteger la continuidad del negocio y la confianza de tus clientes.",
+          opportunity: "Prioriza la autenticación multifactor, la revisión de accesos y las copias de seguridad verificadas.",
+          action: "Activa la autenticación multifactor, revisa los accesos y comprueba que una copia de seguridad reciente funcione."
+        }
+      ];
+      dimensions.forEach((dimension, index) => Object.assign(dimension, spanishDimensions[index]));
+    }
     const questions = dimensions.flatMap((dimension, dimensionIndex) =>
       dimension.questions.map((text, questionInDimension) => ({
         text,
@@ -408,20 +479,75 @@
         questionInDimension
       }))
     );
-    const answerLabels = [
+    const answerLabels = isEnglish ? [
       "Not in place",
       "Ad hoc or just getting started",
       "Partly in place, but inconsistent",
       "Consistent and clearly managed",
       "Measured and continuously improved"
+    ] : [
+      "Todavía no está implementado",
+      "Se hace de manera puntual o está empezando",
+      "Está parcialmente implementado, pero es irregular",
+      "Se aplica de forma constante y organizada",
+      "Se mide y mejora continuamente"
     ];
-    const levels = [
+    const levels = isEnglish ? [
       { minimum: 80, name: "Optimized", summary: "Your digital ecosystem is a strategic advantage. Focus on sustaining performance and exploring carefully chosen new opportunities." },
       { minimum: 60, name: "Advanced", summary: "You have strong digital capabilities. Connecting the remaining gaps can unlock your next stage of growth." },
       { minimum: 40, name: "Consolidation", summary: "Several useful practices are in place. A more connected, measurable approach can help them work harder together." },
       { minimum: 20, name: "In development", summary: "You are building important digital capabilities. Clear priorities and repeatable processes will help create momentum." },
       { minimum: 0, name: "Initial", summary: "This is an opportunity to establish a stronger digital starting point. A few focused foundations can make the next steps clearer." }
+    ] : [
+      { minimum: 80, name: "Optimizado", summary: "Tu ecosistema digital es una ventaja estratégica. Enfócate en sostener los resultados y explorar nuevas oportunidades con criterio." },
+      { minimum: 60, name: "Avanzado", summary: "Tu negocio cuenta con capacidades digitales sólidas. Conectar las brechas restantes puede impulsar la próxima etapa de crecimiento." },
+      { minimum: 40, name: "Consolidación", summary: "Ya tienes prácticas valiosas en marcha. Un enfoque más conectado y medible puede ayudarlas a dar mejores resultados." },
+      { minimum: 20, name: "En desarrollo", summary: "Estás construyendo capacidades digitales importantes. Prioridades claras y procesos repetibles te ayudarán a ganar impulso." },
+      { minimum: 0, name: "Inicial", summary: "Es una oportunidad para fortalecer tu punto de partida digital. Algunas bases bien elegidas pueden aclarar los próximos pasos." }
     ];
+    const copy = isEnglish ? {
+      question: (current, total) => `Question ${current} of ${total}`,
+      next: "Next question →",
+      finish: "Continue to my results →",
+      previous: "← Previous",
+      strongestTitle: "Where you are building momentum",
+      buildFromTitle: "A useful place to build from",
+      priorityTitle: "Your priority opportunities",
+      frontierTitle: "Your next growth frontiers",
+      priorityLabel: (number, score) => `Priority ${number} · ${score}%`,
+      frontierLabel: (score) => `Growth frontier · ${score}%`,
+      strengthFallback: "This is one of your highest-scoring dimensions. Use it as a place to start building and measure your progress.",
+      growthOpportunity: (action) => `You are already strong here. Explore this next-level experiment: ${action}`,
+      reviewAction: "Review your chosen measures in 30 days and refine the next priority based on what you learn.",
+      emailSubject: "My Digital Vibes strategy session",
+      emailGreeting: "Hello Digital Vibes,",
+      emailIntro: "I would like to discuss my digital assessment results.",
+      scoreLabel: "Digital maturity",
+      emailName: "Name",
+      email: "Work email",
+      company: "Company"
+    } : {
+      question: (current, total) => `Pregunta ${current} de ${total}`,
+      next: "Siguiente pregunta →",
+      finish: "Ver mis resultados →",
+      previous: "← Anterior",
+      strongestTitle: "Dónde estás generando impulso",
+      buildFromTitle: "Una base para seguir creciendo",
+      priorityTitle: "Oportunidades prioritarias",
+      frontierTitle: "Próximas fronteras de crecimiento",
+      priorityLabel: (number, score) => `Prioridad ${number} · ${score}%`,
+      frontierLabel: (score) => `Oportunidad de crecimiento · ${score}%`,
+      strengthFallback: "Esta es una de tus dimensiones mejor puntuadas. Puedes tomarla como punto de partida y medir tus avances.",
+      growthOpportunity: (action) => `Ya tienes una buena base en esta dimensión. Como próximo experimento, podrías: ${action}`,
+      reviewAction: "Revisa tus indicadores dentro de 30 días y ajusta las próximas prioridades según lo aprendido.",
+      emailSubject: "Mi sesión estratégica con Digital Vibes",
+      emailGreeting: "Hola Digital Vibes,",
+      emailIntro: "Quisiera conversar sobre los resultados de mi diagnóstico digital.",
+      scoreLabel: "Madurez digital",
+      emailName: "Nombre",
+      email: "Correo de trabajo",
+      company: "Empresa"
+    };
     const views = assessment.querySelectorAll("[data-assessment-view]");
     const questionTitle = assessment.querySelector("[data-assessment-question]");
     const options = assessment.querySelector("[data-assessment-options]");
@@ -447,9 +573,9 @@
       questionTitle.textContent = question.text;
       questionTitle.tabIndex = -1;
       dimensionLabel.textContent = dimensions[question.dimensionIndex].name;
-      countLabel.textContent = `Question ${questionIndex + 1} of ${questions.length}`;
+      countLabel.textContent = copy.question(questionIndex + 1, questions.length);
       progress.setAttribute("aria-valuenow", String(questionIndex + 1));
-      progress.setAttribute("aria-valuetext", `Question ${questionIndex + 1} of ${questions.length}`);
+      progress.setAttribute("aria-valuetext", copy.question(questionIndex + 1, questions.length));
       progress.querySelector("span").style.width = `${((questionIndex + 1) / questions.length) * 100}%`;
       options.replaceChildren(...answerLabels.map((label, value) => {
         const option = document.createElement("label");
@@ -470,11 +596,12 @@
       }));
       nextButton.disabled = answers[questionIndex] === null;
       nextButton.textContent = questionIndex === questions.length - 1
-        ? "Continue to my results →"
-        : "Next question →";
+        ? copy.finish
+        : copy.next;
       backButtons.forEach((button) => {
         button.disabled = questionIndex === 0;
       });
+      assessment.querySelector(".assessment-controls [data-assessment-back]").textContent = copy.previous;
     }
 
     function calculateResults() {
@@ -521,15 +648,15 @@
       const strongestDimensions = sorted.filter((dimension) => dimension.percentage >= 60).slice(0, 2);
       const visibleStrengths = strongestDimensions.length ? strongestDimensions : sorted.slice(0, 1);
       assessment.querySelector("#assessment-strengths-title").textContent = strongestDimensions.length
-        ? "Where you are building momentum"
-        : "A useful place to build from";
+        ? copy.strongestTitle
+        : copy.buildFromTitle;
       strengths.replaceChildren(...visibleStrengths.map((dimension) => {
         const item = document.createElement("li");
         const title = document.createElement("strong");
         title.textContent = `${dimension.name} · ${dimension.percentage}%`;
         item.append(title, document.createTextNode(dimension.percentage >= 60
           ? dimension.strength
-          : "This is one of your highest-scoring dimensions. Use it as a place to start building and measure your progress."));
+          : copy.strengthFallback));
         return item;
       }));
 
@@ -538,18 +665,20 @@
       const prioritized = opportunities.length >= 2 ? opportunities : weakestDimensions.slice(0, 2);
       const allDimensionsStrong = results.scores.every((dimension) => dimension.percentage >= 80);
       assessment.querySelector("#assessment-priorities-title").textContent = allDimensionsStrong
-        ? "Your next growth frontiers"
-        : "Your priority opportunities";
+        ? copy.frontierTitle
+        : copy.priorityTitle;
       assessment.querySelector("[data-assessment-opportunities]").replaceChildren(...prioritized.map((dimension, index) => {
         const article = document.createElement("article");
         article.className = "assessment-opportunity";
         const priority = document.createElement("span");
-        priority.textContent = `${dimension.percentage >= 80 ? "Growth frontier" : `Priority ${index + 1}`} · ${dimension.percentage}%`;
+        priority.textContent = dimension.percentage >= 80
+          ? copy.frontierLabel(dimension.percentage)
+          : copy.priorityLabel(index + 1, dimension.percentage);
         const title = document.createElement("h4");
         title.textContent = dimension.name;
         const description = document.createElement("p");
         description.textContent = dimension.percentage >= 80
-          ? `You are already strong here. Explore this next-level experiment: ${dimension.action}`
+          ? copy.growthOpportunity(dimension.action)
           : dimension.opportunity;
         article.append(priority, title, description);
         return article;
@@ -563,25 +692,25 @@
       }));
       if (prioritized.length < 3) {
         const reviewStep = document.createElement("li");
-        reviewStep.textContent = "Review your chosen measures in 30 days and refine the next priority based on what you learn.";
+        reviewStep.textContent = copy.reviewAction;
         actionPlan.append(reviewStep);
       }
 
       const resultSummary = [
-        `Digital maturity: ${results.score}% (${results.level.name})`,
+        `${copy.scoreLabel}: ${results.score}% (${results.level.name})`,
         ...results.scores.map((dimension) => `${dimension.name}: ${dimension.percentage}%`)
       ].join("\n");
-      const emailSubject = encodeURIComponent("My Digital Vibes strategy session");
+      const emailSubject = encodeURIComponent(copy.emailSubject);
       const emailBody = encodeURIComponent(
-        `Hello Digital Vibes,\n\nI would like to discuss my digital assessment results.\n\n` +
-        `${resultSummary}\n\nName: ${contactDetails.name}\nWork email: ${contactDetails.email}\nCompany: ${contactDetails.company}`
+        `${copy.emailGreeting}\n\n${copy.emailIntro}\n\n` +
+        `${resultSummary}\n\n${copy.emailName}: ${contactDetails.name}\n${copy.email}: ${contactDetails.email}\n${copy.company}: ${contactDetails.company}`
       );
       assessment.querySelector("[data-assessment-email]").href =
         `mailto:hola@digitalvibes.com?subject=${emailSubject}&body=${emailBody}`;
-      const whatsappText = encodeURIComponent(
-        `I completed the Digital Vibes assessment: ${results.score}% (${results.level.name}). ` +
-        `My priority areas are ${prioritized.map((dimension) => dimension.name).join(" and ")}.`
-      );
+      const priorityNames = prioritized.map((dimension) => dimension.name).join(isEnglish ? " and " : " y ");
+      const whatsappText = encodeURIComponent(isEnglish
+        ? `I completed the Digital Vibes assessment: ${results.score}% (${results.level.name}). My priority areas are ${priorityNames}.`
+        : `Completé el diagnóstico de Digital Vibes: ${results.score}% (${results.level.name}). Mis áreas prioritarias son ${priorityNames}.`);
       assessment.querySelector("[data-assessment-whatsapp]").href = `https://wa.me/?text=${whatsappText}`;
     }
 

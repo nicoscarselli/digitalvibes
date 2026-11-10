@@ -32,6 +32,7 @@
       </a>
       <nav id="primary-navigation" aria-label="Navegación principal" data-open="false">
         <ul>
+          <li><a href="#diagnostico">Diagnóstico digital</a></li>
           <li><a href="#sobre">Nosotros</a></li>
           <li><a href="#servicios">Servicios</a></li>
           <li><a href="#vibe-flow">Vibe Flow</a></li>
@@ -53,8 +54,89 @@
         <h1 id="hero-title">Tu marca tiene una <strong>frecuencia propia.</strong> Hagamos que llegue más lejos.</h1>
         <p>Diseñamos circuitos de crecimiento digital que conectan estrategia, marketing, tecnología e inteligencia artificial para transformar marcas y crear nuevas oportunidades.</p>
         <div class="cta">
+          <a class="btn primary" href="#diagnostico">Encuentra tu vibe digital</a>
           <a class="btn primary" href="#servicios">Descubre nuestros servicios</a>
           <a class="btn ghost" href="#contacto">Conversemos sobre tu marca</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="assessment" id="diagnostico" aria-labelledby="assessment-title">
+      <div class="wrap">
+        <div class="assessment-intro" data-assessment-view="intro">
+          <p class="assessment-eyebrow">FIND YOUR DIGITAL VIBE</p>
+          <h2 id="assessment-title">¿Tu negocio está transmitiendo todo su potencial digital?</h2>
+          <p class="assessment-lede">Obtén una visión clara de lo que funciona, dónde se frena el crecimiento y qué conviene priorizar. Tu diagnóstico personalizado recorre seis dimensiones de tu negocio.</p>
+          <div class="assessment-meta"><span>◷ &nbsp;3–5 minutos</span><span>18 preguntas</span><span>Próximos pasos personalizados</span></div>
+          <button class="btn primary" type="button" data-assessment-start>Iniciar diagnóstico <span aria-hidden="true">→</span></button>
+          <p class="assessment-note">Sin fórmulas mágicas: un punto de partida práctico para tu próxima etapa de crecimiento.</p>
+        </div>
+
+        <div class="assessment-panel" data-assessment-view="quiz" hidden>
+          <div class="assessment-progress">
+            <div class="assessment-progress-copy"><span data-assessment-dimension></span><span data-assessment-count aria-live="polite"></span></div>
+            <div class="assessment-progress-track" role="progressbar" aria-label="Progreso del diagnóstico" aria-valuemin="0" aria-valuemax="18" aria-valuenow="0" data-assessment-progress><span></span></div>
+          </div>
+          <fieldset class="assessment-question">
+            <legend data-assessment-question></legend>
+            <div class="assessment-options" data-assessment-options></div>
+          </fieldset>
+          <div class="assessment-controls">
+            <button class="btn ghost" type="button" data-assessment-back>← Anterior</button>
+            <button class="btn primary" type="button" data-assessment-next disabled>Siguiente pregunta →</button>
+          </div>
+          <p class="assessment-note">Tus respuestas permanecen en esta sesión del navegador y no se guardan.</p>
+        </div>
+
+        <div class="assessment-panel" data-assessment-view="contact" hidden>
+          <p class="assessment-eyebrow">UN ÚLTIMO PASO</p>
+          <h2 id="assessment-contact-title">Tus resultados están listos.</h2>
+          <p class="assessment-lede">Completa tus datos para ver el diagnóstico y las prioridades más relevantes para tu negocio.</p>
+          <form class="assessment-form" data-assessment-form aria-labelledby="assessment-contact-title">
+            <label for="assessment-name">Nombre<input id="assessment-name" name="name" autocomplete="name" required></label>
+            <label for="assessment-email">Correo de trabajo<input id="assessment-email" name="email" type="email" autocomplete="email" required></label>
+            <label for="assessment-company">Empresa<input id="assessment-company" name="company" autocomplete="organization" required></label>
+            <label class="assessment-consent"><input name="consent" type="checkbox" required><span>Consiento compartir estos datos con Digital Vibes solo si solicito una sesión estratégica. Esta página no guarda ni envía mi información; la solicitud abre un borrador de correo con mis datos para que pueda revisarlo y enviarlo. <a href="#contacto">Contactanos</a> si tienes dudas sobre privacidad.</span></label>
+            <button class="btn primary" type="submit">Ver mis resultados <span aria-hidden="true">→</span></button>
+          </form>
+          <button class="btn ghost" type="button" data-assessment-back>← Volver a mis respuestas</button>
+        </div>
+
+        <div class="assessment-panel assessment-results" data-assessment-view="results" aria-labelledby="assessment-results-title" hidden>
+          <p class="assessment-eyebrow">TU VIBE DIGITAL</p>
+          <h2 id="assessment-results-title">Tu diagnóstico de madurez digital</h2>
+          <div class="assessment-score-card">
+            <div class="assessment-score"><span data-assessment-score></span><span class="assessment-score-percent">%</span></div>
+            <div><p class="assessment-level" data-assessment-level></p><p data-assessment-summary></p></div>
+          </div>
+          <div class="assessment-results-grid">
+            <section aria-labelledby="assessment-breakdown-title">
+              <h3 id="assessment-breakdown-title">Tus seis dimensiones</h3>
+              <div class="assessment-breakdown" data-assessment-breakdown></div>
+            </section>
+            <section aria-labelledby="assessment-strengths-title">
+              <h3 id="assessment-strengths-title">Dónde estás generando impulso</h3>
+              <ul class="assessment-insights" data-assessment-strengths></ul>
+            </section>
+          </div>
+          <section class="assessment-priorities" aria-labelledby="assessment-priorities-title">
+            <p class="assessment-eyebrow">EL PRÓXIMO PASO</p>
+            <h3 id="assessment-priorities-title">Oportunidades prioritarias</h3>
+            <div class="assessment-opportunities" data-assessment-opportunities></div>
+          </section>
+          <section class="assessment-action-plan" aria-labelledby="assessment-action-title">
+            <h3 id="assessment-action-title">Un plan de acción para empezar</h3>
+            <ol data-assessment-action-plan></ol>
+          </section>
+          <div class="assessment-cta">
+            <h3>¿Convertimos este diagnóstico en impulso?</h3>
+            <p>Tus resultados son un punto de partida. Conversemos para definir el próximo paso para tu negocio.</p>
+            <div class="cta">
+              <a class="btn primary" data-assessment-email href="mailto:hola@digitalvibes.com">Solicitar sesión estratégica</a>
+              <a class="btn ghost" data-assessment-whatsapp href="https://wa.me/" target="_blank" rel="noopener noreferrer">Compartir mi diagnóstico por WhatsApp</a>
+            </div>
+          </div>
+          <button class="btn ghost" type="button" data-assessment-restart>Volver a hacer el diagnóstico</button>
         </div>
       </div>
     </section>
