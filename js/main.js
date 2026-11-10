@@ -324,6 +324,319 @@
     });
   }
 
+  const assessment = document.querySelector("#digital-assessment");
+  if (assessment) {
+    const dimensions = [
+      {
+        id: "foundations",
+        name: "Digital foundations",
+        questions: [
+          "How clearly defined is your digital value proposition and target audience?",
+          "How connected and consistently maintained are your website, analytics, and core digital tools?",
+          "How regularly do you use reliable data to make business and marketing decisions?"
+        ],
+        strength: "Your digital foundations give your team a clear, dependable platform for growth.",
+        opportunity: "Clarify your positioning and connect your core digital tools before scaling activity.",
+        action: "Map your customer journey, review your website and analytics setup, and choose a small set of business KPIs."
+      },
+      {
+        id: "demand",
+        name: "Demand generation",
+        questions: [
+          "How consistently do you publish useful content for the people you want to reach?",
+          "How systematically do you attract qualified prospects through search, social, or paid media?",
+          "How reliably do you measure which channels and campaigns generate valuable leads?"
+        ],
+        strength: "Your demand-generation engine is building a consistent path to qualified audiences.",
+        opportunity: "Create a focused content and channel plan, then measure lead quality instead of reach alone.",
+        action: "Choose one priority audience, define a repeatable content cadence, and track qualified leads by source."
+      },
+      {
+        id: "conversion",
+        name: "Conversion",
+        questions: [
+          "How easy is it for a potential customer to take the next step on your website?",
+          "How consistently do you follow up with new leads and track their progress?",
+          "How often do you test and improve your landing pages, forms, or sales journey?"
+        ],
+        strength: "Your conversion journey is turning digital attention into meaningful customer action.",
+        opportunity: "Remove friction from key pages and make lead follow-up clear, timely, and measurable.",
+        action: "Review your highest-value landing page, reduce its main point of friction, and assign a clear lead follow-up owner."
+      },
+      {
+        id: "loyalty",
+        name: "Customer loyalty",
+        questions: [
+          "How consistently do you stay in touch with customers after their first purchase or project?",
+          "How do you collect and act on customer feedback, reviews, or satisfaction signals?",
+          "How effectively do you encourage repeat purchases, referrals, or long-term relationships?"
+        ],
+        strength: "Your customer relationships are creating a strong foundation for repeat business and referrals.",
+        opportunity: "Build a simple post-purchase experience and use customer feedback to guide retention.",
+        action: "Plan a post-purchase check-in, invite feedback, and identify one useful reason for customers to return."
+      },
+      {
+        id: "automation",
+        name: "AI & automation",
+        questions: [
+          "How clearly have you identified repetitive tasks that could be improved with automation?",
+          "How regularly does your team use AI tools within clear, reviewed workflows?",
+          "How do you check that automation and AI save time without compromising quality or trust?"
+        ],
+        strength: "Your team is using AI and automation thoughtfully to create practical operating efficiencies.",
+        opportunity: "Start with one repetitive workflow and set clear quality, privacy, and human-review guardrails.",
+        action: "Choose a low-risk repetitive task, document its current steps, and test one human-reviewed automation."
+      },
+      {
+        id: "security",
+        name: "Digital security",
+        questions: [
+          "How consistently do you use strong passwords and multi-factor authentication on business accounts?",
+          "How clearly do you manage access, backups, and updates across your essential digital tools?",
+          "How prepared is your team to recognize suspicious messages and respond to a digital incident?"
+        ],
+        strength: "Your security practices help protect business continuity and customer trust.",
+        opportunity: "Prioritize multi-factor authentication, access reviews, and tested backups for critical accounts.",
+        action: "Enable multi-factor authentication on critical accounts, review who has access, and verify a recent backup."
+      }
+    ];
+    const questions = dimensions.flatMap((dimension, dimensionIndex) =>
+      dimension.questions.map((text, questionInDimension) => ({
+        text,
+        dimensionId: dimension.id,
+        dimensionIndex,
+        questionInDimension
+      }))
+    );
+    const answerLabels = [
+      "Not in place",
+      "Ad hoc or just getting started",
+      "Partly in place, but inconsistent",
+      "Consistent and clearly managed",
+      "Measured and continuously improved"
+    ];
+    const levels = [
+      { minimum: 80, name: "Optimized", summary: "Your digital ecosystem is a strategic advantage. Focus on sustaining performance and exploring carefully chosen new opportunities." },
+      { minimum: 60, name: "Advanced", summary: "You have strong digital capabilities. Connecting the remaining gaps can unlock your next stage of growth." },
+      { minimum: 40, name: "Consolidation", summary: "Several useful practices are in place. A more connected, measurable approach can help them work harder together." },
+      { minimum: 20, name: "In development", summary: "You are building important digital capabilities. Clear priorities and repeatable processes will help create momentum." },
+      { minimum: 0, name: "Initial", summary: "This is an opportunity to establish a stronger digital starting point. A few focused foundations can make the next steps clearer." }
+    ];
+    const views = assessment.querySelectorAll("[data-assessment-view]");
+    const questionTitle = assessment.querySelector("[data-assessment-question]");
+    const options = assessment.querySelector("[data-assessment-options]");
+    const dimensionLabel = assessment.querySelector("[data-assessment-dimension]");
+    const countLabel = assessment.querySelector("[data-assessment-count]");
+    const progress = assessment.querySelector("[data-assessment-progress]");
+    const nextButton = assessment.querySelector("[data-assessment-next]");
+    const backButtons = assessment.querySelectorAll("[data-assessment-back]");
+    const contactForm = assessment.querySelector("[data-assessment-form]");
+    const answers = Array(questions.length).fill(null);
+    let questionIndex = 0;
+    let contactDetails = null;
+
+    function showView(name) {
+      views.forEach((view) => {
+        view.hidden = view.dataset.assessmentView !== name;
+      });
+      assessment.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+    }
+
+    function renderQuestion() {
+      const question = questions[questionIndex];
+      questionTitle.textContent = question.text;
+      questionTitle.tabIndex = -1;
+      dimensionLabel.textContent = dimensions[question.dimensionIndex].name;
+      countLabel.textContent = `Question ${questionIndex + 1} of ${questions.length}`;
+      progress.setAttribute("aria-valuenow", String(questionIndex + 1));
+      progress.setAttribute("aria-valuetext", `Question ${questionIndex + 1} of ${questions.length}`);
+      progress.querySelector("span").style.width = `${((questionIndex + 1) / questions.length) * 100}%`;
+      options.replaceChildren(...answerLabels.map((label, value) => {
+        const option = document.createElement("label");
+        option.className = "assessment-option";
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = `assessment-answer-${questionIndex}`;
+        input.value = String(value);
+        input.checked = answers[questionIndex] === value;
+        input.addEventListener("change", () => {
+          answers[questionIndex] = value;
+          nextButton.disabled = false;
+        });
+        const text = document.createElement("span");
+        text.textContent = label;
+        option.append(input, text);
+        return option;
+      }));
+      nextButton.disabled = answers[questionIndex] === null;
+      nextButton.textContent = questionIndex === questions.length - 1
+        ? "Continue to my results →"
+        : "Next question →";
+      backButtons.forEach((button) => {
+        button.disabled = questionIndex === 0;
+      });
+    }
+
+    function calculateResults() {
+      const scores = dimensions.map((dimension) => {
+        const questionIndexes = questions
+          .map((question, index) => question.dimensionId === dimension.id ? index : -1)
+          .filter((index) => index !== -1);
+        const points = questionIndexes.reduce((total, index) => total + answers[index], 0);
+        return { ...dimension, points, percentage: Math.round((points / (questionIndexes.length * 4)) * 100) };
+      });
+      const score = Math.round(
+        (answers.reduce((total, answer) => total + answer, 0) / (questions.length * 4)) * 100
+      );
+      return { scores, score, level: levels.find((level) => score >= level.minimum) };
+    }
+
+    function renderResults() {
+      const results = calculateResults();
+      const sorted = [...results.scores].sort((a, b) => b.percentage - a.percentage);
+      assessment.querySelector("[data-assessment-score]").textContent = String(results.score);
+      assessment.querySelector("[data-assessment-level]").textContent = results.level.name;
+      assessment.querySelector("[data-assessment-summary]").textContent = results.level.summary;
+
+      const breakdown = assessment.querySelector("[data-assessment-breakdown]");
+      breakdown.replaceChildren(...results.scores.map((dimension) => {
+        const row = document.createElement("div");
+        row.className = "assessment-dimension";
+        const name = document.createElement("strong");
+        name.textContent = dimension.name;
+        const score = document.createElement("span");
+        score.textContent = `${dimension.percentage}%`;
+        const track = document.createElement("div");
+        track.className = "assessment-dimension-track";
+        track.setAttribute("role", "img");
+        track.setAttribute("aria-label", `${dimension.name}: ${dimension.percentage}%`);
+        const fill = document.createElement("span");
+        fill.style.width = `${dimension.percentage}%`;
+        track.append(fill);
+        row.append(name, score, track);
+        return row;
+      }));
+
+      const strengths = assessment.querySelector("[data-assessment-strengths]");
+      const strongestDimensions = sorted.filter((dimension) => dimension.percentage >= 60).slice(0, 2);
+      const visibleStrengths = strongestDimensions.length ? strongestDimensions : sorted.slice(0, 1);
+      assessment.querySelector("#assessment-strengths-title").textContent = strongestDimensions.length
+        ? "Where you are building momentum"
+        : "A useful place to build from";
+      strengths.replaceChildren(...visibleStrengths.map((dimension) => {
+        const item = document.createElement("li");
+        const title = document.createElement("strong");
+        title.textContent = `${dimension.name} · ${dimension.percentage}%`;
+        item.append(title, document.createTextNode(dimension.percentage >= 60
+          ? dimension.strength
+          : "This is one of your highest-scoring dimensions. Use it as a place to start building and measure your progress."));
+        return item;
+      }));
+
+      const weakestDimensions = [...results.scores].sort((a, b) => a.percentage - b.percentage);
+      const opportunities = weakestDimensions.slice(0, 3).filter((dimension) => dimension.percentage < 70);
+      const prioritized = opportunities.length >= 2 ? opportunities : weakestDimensions.slice(0, 2);
+      const allDimensionsStrong = results.scores.every((dimension) => dimension.percentage >= 80);
+      assessment.querySelector("#assessment-priorities-title").textContent = allDimensionsStrong
+        ? "Your next growth frontiers"
+        : "Your priority opportunities";
+      assessment.querySelector("[data-assessment-opportunities]").replaceChildren(...prioritized.map((dimension, index) => {
+        const article = document.createElement("article");
+        article.className = "assessment-opportunity";
+        const priority = document.createElement("span");
+        priority.textContent = `${dimension.percentage >= 80 ? "Growth frontier" : `Priority ${index + 1}`} · ${dimension.percentage}%`;
+        const title = document.createElement("h4");
+        title.textContent = dimension.name;
+        const description = document.createElement("p");
+        description.textContent = dimension.percentage >= 80
+          ? `You are already strong here. Explore this next-level experiment: ${dimension.action}`
+          : dimension.opportunity;
+        article.append(priority, title, description);
+        return article;
+      }));
+
+      const actionPlan = assessment.querySelector("[data-assessment-action-plan]");
+      actionPlan.replaceChildren(...prioritized.map((dimension) => {
+        const item = document.createElement("li");
+        item.textContent = dimension.action;
+        return item;
+      }));
+      if (prioritized.length < 3) {
+        const reviewStep = document.createElement("li");
+        reviewStep.textContent = "Review your chosen measures in 30 days and refine the next priority based on what you learn.";
+        actionPlan.append(reviewStep);
+      }
+
+      const resultSummary = [
+        `Digital maturity: ${results.score}% (${results.level.name})`,
+        ...results.scores.map((dimension) => `${dimension.name}: ${dimension.percentage}%`)
+      ].join("\n");
+      const emailSubject = encodeURIComponent("My Digital Vibes strategy session");
+      const emailBody = encodeURIComponent(
+        `Hello Digital Vibes,\n\nI would like to discuss my digital assessment results.\n\n` +
+        `${resultSummary}\n\nName: ${contactDetails.name}\nWork email: ${contactDetails.email}\nCompany: ${contactDetails.company}`
+      );
+      assessment.querySelector("[data-assessment-email]").href =
+        `mailto:hola@digitalvibes.com?subject=${emailSubject}&body=${emailBody}`;
+      const whatsappText = encodeURIComponent(
+        `I completed the Digital Vibes assessment: ${results.score}% (${results.level.name}). ` +
+        `My priority areas are ${prioritized.map((dimension) => dimension.name).join(" and ")}.`
+      );
+      assessment.querySelector("[data-assessment-whatsapp]").href = `https://wa.me/?text=${whatsappText}`;
+    }
+
+    assessment.querySelector("[data-assessment-start]").addEventListener("click", () => {
+      questionIndex = 0;
+      renderQuestion();
+      showView("quiz");
+      questionTitle.focus({ preventScroll: true });
+    });
+    nextButton.addEventListener("click", () => {
+      if (answers[questionIndex] === null) return;
+      if (questionIndex < questions.length - 1) {
+        questionIndex += 1;
+        renderQuestion();
+        questionTitle.focus({ preventScroll: true });
+      } else {
+        showView("contact");
+        assessment.querySelector("#assessment-name").focus({ preventScroll: true });
+      }
+    });
+    backButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.closest('[data-assessment-view="contact"]')) {
+          showView("quiz");
+          renderQuestion();
+          questionTitle.focus({ preventScroll: true });
+        } else if (questionIndex > 0) {
+          questionIndex -= 1;
+          renderQuestion();
+          questionTitle.focus({ preventScroll: true });
+        }
+      });
+    });
+    contactForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!contactForm.reportValidity()) return;
+      const formData = new FormData(contactForm);
+      contactDetails = {
+        name: String(formData.get("name")),
+        email: String(formData.get("email")),
+        company: String(formData.get("company"))
+      };
+      renderResults();
+      showView("results");
+      assessment.querySelector("#assessment-results-title").focus({ preventScroll: true });
+    });
+    assessment.querySelector("[data-assessment-restart]").addEventListener("click", () => {
+      answers.fill(null);
+      contactForm.reset();
+      contactDetails = null;
+      questionIndex = 0;
+      showView("intro");
+    });
+  }
+
   const contactForm = document.querySelector("#contact-form");
   const formStatus = document.querySelector("#form-status");
   contactForm?.addEventListener("submit", (event) => {

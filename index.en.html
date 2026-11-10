@@ -32,6 +32,7 @@
       </a>
       <nav id="primary-navigation" aria-label="Main navigation" data-open="false">
         <ul>
+          <li><a href="#digital-assessment">Digital assessment</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#vibe-flow">Vibe Flow</a></li>
@@ -53,8 +54,89 @@
         <h1 id="hero-title">Your brand has its own <strong>frequency.</strong> Let’s help it reach further.</h1>
         <p>We design digital growth systems that bring strategy, marketing, technology, and artificial intelligence together to transform brands and create new opportunities.</p>
         <div class="cta">
+          <a class="btn primary" href="#digital-assessment">Find your digital vibe</a>
           <a class="btn primary" href="#services">Explore our services</a>
           <a class="btn ghost" href="#contact">Let’s talk about your brand</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="assessment" id="digital-assessment" aria-labelledby="assessment-title">
+      <div class="wrap">
+        <div class="assessment-intro" data-assessment-view="intro">
+          <p class="assessment-eyebrow">FIND YOUR DIGITAL VIBE</p>
+          <h2 id="assessment-title">Is your business reaching its full digital potential?</h2>
+          <p class="assessment-lede">Get a clear picture of what is working, where growth is stalling, and what to focus on next. Your personalized digital maturity snapshot covers six areas of your business.</p>
+          <div class="assessment-meta"><span>◷ &nbsp;3–5 minutes</span><span>18 questions</span><span>Personalized next steps</span></div>
+          <button class="btn primary" type="button" data-assessment-start>Start your assessment <span aria-hidden="true">→</span></button>
+          <p class="assessment-note">No sales pitch. Just a practical starting point for your next stage of growth.</p>
+        </div>
+
+        <div class="assessment-panel" data-assessment-view="quiz" hidden>
+          <div class="assessment-progress">
+            <div class="assessment-progress-copy"><span data-assessment-dimension></span><span data-assessment-count aria-live="polite"></span></div>
+            <div class="assessment-progress-track" role="progressbar" aria-label="Assessment progress" aria-valuemin="0" aria-valuemax="18" aria-valuenow="0" data-assessment-progress><span></span></div>
+          </div>
+          <fieldset class="assessment-question">
+            <legend data-assessment-question></legend>
+            <div class="assessment-options" data-assessment-options></div>
+          </fieldset>
+          <div class="assessment-controls">
+            <button class="btn ghost" type="button" data-assessment-back>← Previous</button>
+            <button class="btn primary" type="button" data-assessment-next disabled>Next question →</button>
+          </div>
+          <p class="assessment-note">Your answers stay in this browser session until you leave this page.</p>
+        </div>
+
+        <div class="assessment-panel" data-assessment-view="contact" hidden>
+          <p class="assessment-eyebrow">ONE LAST STEP</p>
+          <h2 id="assessment-contact-title">Your results are ready.</h2>
+          <p class="assessment-lede">Add your details to reveal your personalized snapshot and the priorities most relevant to your business.</p>
+          <form class="assessment-form" data-assessment-form aria-labelledby="assessment-contact-title">
+            <label for="assessment-name">Your name<input id="assessment-name" name="name" autocomplete="name" required></label>
+            <label for="assessment-email">Work email<input id="assessment-email" name="email" type="email" autocomplete="email" required></label>
+            <label for="assessment-company">Company<input id="assessment-company" name="company" autocomplete="organization" required></label>
+            <label class="assessment-consent"><input name="consent" type="checkbox" required><span>I consent to sharing these details with Digital Vibes only if I choose to request a strategy session. This page does not store or send my information; the request opens an email draft containing my details for me to review and send. <a href="#contact">Contact us</a> with any privacy questions.</span></label>
+            <button class="btn primary" type="submit">Show my results <span aria-hidden="true">→</span></button>
+          </form>
+          <button class="btn ghost" type="button" data-assessment-back>← Back to my answers</button>
+        </div>
+
+        <div class="assessment-panel assessment-results" data-assessment-view="results" aria-labelledby="assessment-results-title" hidden>
+          <p class="assessment-eyebrow">YOUR DIGITAL VIBE</p>
+          <h2 id="assessment-results-title">Your digital maturity snapshot</h2>
+          <div class="assessment-score-card">
+            <div class="assessment-score"><span data-assessment-score></span><span class="assessment-score-percent">%</span></div>
+            <div><p class="assessment-level" data-assessment-level></p><p data-assessment-summary></p></div>
+          </div>
+          <div class="assessment-results-grid">
+            <section aria-labelledby="assessment-breakdown-title">
+              <h3 id="assessment-breakdown-title">Your six dimensions</h3>
+              <div class="assessment-breakdown" data-assessment-breakdown></div>
+            </section>
+            <section aria-labelledby="assessment-strengths-title">
+              <h3 id="assessment-strengths-title">Where you are building momentum</h3>
+              <ul class="assessment-insights" data-assessment-strengths></ul>
+            </section>
+          </div>
+          <section class="assessment-priorities" aria-labelledby="assessment-priorities-title">
+            <p class="assessment-eyebrow">FOCUS YOUR NEXT MOVE</p>
+            <h3 id="assessment-priorities-title">Your priority opportunities</h3>
+            <div class="assessment-opportunities" data-assessment-opportunities></div>
+          </section>
+          <section class="assessment-action-plan" aria-labelledby="assessment-action-title">
+            <h3 id="assessment-action-title">A practical first action plan</h3>
+            <ol data-assessment-action-plan></ol>
+          </section>
+          <div class="assessment-cta">
+            <h3>Ready to turn insight into momentum?</h3>
+            <p>Your results are a starting point. Let’s map the right next step for your business.</p>
+            <div class="cta">
+              <a class="btn primary" data-assessment-email href="mailto:hola@digitalvibes.com">Request a strategy session</a>
+              <a class="btn ghost" data-assessment-whatsapp href="https://wa.me/" target="_blank" rel="noopener noreferrer">Share your snapshot on WhatsApp</a>
+            </div>
+          </div>
+          <button class="btn ghost" type="button" data-assessment-restart>Retake the assessment</button>
         </div>
       </div>
     </section>
