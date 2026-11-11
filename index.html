@@ -24,6 +24,7 @@
   <script src="js/main.js" defer></script>
 </head>
 <body>
+  <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header>
     <div class="wrap nav">
@@ -32,7 +33,7 @@
       </a>
       <nav id="primary-navigation" aria-label="Navegación principal" data-open="false">
         <ul>
-          <li><a href="#diagnostico">Diagnóstico digital</a></li>
+          <li><a class="nav-assessment" href="#diagnostico">Evaluar mi madurez digital gratis</a></li>
           <li><a href="#sobre">Nosotros</a></li>
           <li><a href="#servicios">Servicios</a></li>
           <li><a href="#vibe-flow">Vibe Flow</a></li>
@@ -51,12 +52,11 @@
     <section class="hero" id="top" aria-labelledby="hero-title">
       <canvas id="waves" aria-hidden="true"></canvas>
       <div class="wrap">
-        <h1 id="hero-title">Tu marca tiene una <strong>frecuencia propia.</strong> Hagamos que llegue más lejos.</h1>
-        <p>Diseñamos circuitos de crecimiento digital que conectan estrategia, marketing, tecnología e inteligencia artificial para transformar marcas y crear nuevas oportunidades.</p>
+        <h1 id="hero-title">Tu marca tiene una <strong>frecuencia propia.</strong> Hagamos que llegue más lejos</h1>
+        <p>Descubre dónde está tu empresa digitalmente y qué oportunidades puede activar para crecer. Empieza con una evaluación gratuita y recibe tu mapa de crecimiento para los próximos 12 meses.</p>
         <div class="cta">
-          <a class="btn primary" href="#diagnostico">Encuentra tu vibe digital</a>
-          <a class="btn primary" href="#servicios">Descubre nuestros servicios</a>
-          <a class="btn ghost" href="#contacto">Conversemos sobre tu marca</a>
+          <a class="btn primary" href="#diagnostico">Evaluar mi madurez digital gratis</a>
+          <a class="btn ghost" href="#vibe-flow">Conocer cómo trabajamos</a>
         </div>
       </div>
     </section>
@@ -66,10 +66,10 @@
         <div class="assessment-intro" data-assessment-view="intro">
           <p class="assessment-eyebrow">FIND YOUR DIGITAL VIBE</p>
           <h2 id="assessment-title">¿Tu negocio está transmitiendo todo su potencial digital?</h2>
-          <p class="assessment-lede">Obtén una visión clara de lo que funciona, dónde se frena el crecimiento y qué conviene priorizar. Tu diagnóstico personalizado recorre seis dimensiones de tu negocio.</p>
+          <p class="assessment-lede">Responde 18 preguntas en 3–5 minutos y recibe gratis un mapa de crecimiento para tu empresa, con fortalezas, oportunidades prioritarias y una hoja de ruta para los próximos 12 meses.</p>
           <div class="assessment-meta"><span>◷ &nbsp;3–5 minutos</span><span>18 preguntas</span><span>Próximos pasos personalizados</span></div>
           <button class="btn primary" type="button" data-assessment-start>Iniciar diagnóstico <span aria-hidden="true">→</span></button>
-          <p class="assessment-note">Sin fórmulas mágicas: un punto de partida práctico para tu próxima etapa de crecimiento.</p>
+          <p class="assessment-note">Pensado para pequeños negocios, pymes y empresas consolidadas. Sin compromiso.</p>
         </div>
 
         <div class="assessment-panel" data-assessment-view="quiz" hidden>
@@ -85,21 +85,7 @@
             <button class="btn ghost" type="button" data-assessment-back>← Anterior</button>
             <button class="btn primary" type="button" data-assessment-next disabled>Siguiente pregunta →</button>
           </div>
-          <p class="assessment-note">Tus respuestas permanecen en esta sesión del navegador y no se guardan.</p>
-        </div>
-
-        <div class="assessment-panel" data-assessment-view="contact" hidden>
-          <p class="assessment-eyebrow">UN ÚLTIMO PASO</p>
-          <h2 id="assessment-contact-title">Tus resultados están listos.</h2>
-          <p class="assessment-lede">Completa tus datos para ver el diagnóstico y las prioridades más relevantes para tu negocio.</p>
-          <form class="assessment-form" data-assessment-form aria-labelledby="assessment-contact-title">
-            <label for="assessment-name">Nombre<input id="assessment-name" name="name" autocomplete="name" required></label>
-            <label for="assessment-email">Correo de trabajo<input id="assessment-email" name="email" type="email" autocomplete="email" required></label>
-            <label for="assessment-company">Empresa<input id="assessment-company" name="company" autocomplete="organization" required></label>
-            <label class="assessment-consent"><input name="consent" type="checkbox" required><span>Consiento compartir estos datos con Digital Vibes solo si solicito una sesión estratégica. Esta página no guarda ni envía mi información; la solicitud abre un borrador de correo con mis datos para que pueda revisarlo y enviarlo. <a href="#contacto">Contactanos</a> si tienes dudas sobre privacidad.</span></label>
-            <button class="btn primary" type="submit">Ver mis resultados <span aria-hidden="true">→</span></button>
-          </form>
-          <button class="btn ghost" type="button" data-assessment-back>← Volver a mis respuestas</button>
+          <p class="assessment-note">El diagnóstico se calcula en esta página. Tus respuestas no se envían ni se guardan y desaparecen al cerrar o recargarla.</p>
         </div>
 
         <div class="assessment-panel assessment-results" data-assessment-view="results" aria-labelledby="assessment-results-title" hidden>
@@ -125,15 +111,14 @@
             <div class="assessment-opportunities" data-assessment-opportunities></div>
           </section>
           <section class="assessment-action-plan" aria-labelledby="assessment-action-title">
-            <h3 id="assessment-action-title">Un plan de acción para empezar</h3>
-            <ol data-assessment-action-plan></ol>
+            <h3 id="assessment-action-title">Tu mapa de crecimiento a 12 meses</h3>
+            <div class="assessment-roadmap" data-assessment-action-plan></div>
           </section>
           <div class="assessment-cta">
-            <h3>¿Convertimos este diagnóstico en impulso?</h3>
-            <p>Tus resultados son un punto de partida. Conversemos para definir el próximo paso para tu negocio.</p>
+            <h3>¿Qué te gustaría hacer ahora?</h3>
             <div class="cta">
-              <a class="btn primary" data-assessment-email href="mailto:hola@digitalvibes.com">Solicitar sesión estratégica</a>
-              <a class="btn ghost" data-assessment-whatsapp href="https://wa.me/" target="_blank" rel="noopener noreferrer">Compartir mi diagnóstico por WhatsApp</a>
+              <a class="btn primary" href="#contacto">Quiero hablar con Digital Vibes sobre mi plan</a>
+              <a class="btn ghost" href="#servicios">Seguir con mi mapa por ahora</a>
             </div>
           </div>
           <button class="btn ghost" type="button" data-assessment-restart>Volver a hacer el diagnóstico</button>
@@ -145,28 +130,27 @@
       <div class="wrap grid">
         <div class="txt">
           <h2 id="about-title">Espíritu digital en movimiento</h2>
-          <p>Digital Vibes nace de una idea simple: una marca crece cuando todo lo que hace vibra en la misma frecuencia. Estrategia, contenido, medios pagos, web e inteligencia artificial dejan de ser piezas sueltas y pasan a formar un solo circuito.</p>
-          <p>Trabajamos con equipos pequeños y senior, en ciclos cortos, midiendo lo que importa y ajustando sobre la marcha.</p>
+          <p>Ayudamos a pequeños negocios, pymes y empresas a entender dónde están, decidir qué priorizar y conectar sus acciones digitales con objetivos de crecimiento medibles.</p>
+          <p>Integramos estrategia, marketing, experiencia digital y tecnología en un circuito flexible, ajustado a las necesidades y capacidades reales de cada empresa.</p>
         </div>
         <div class="pillars">
           <article><h3>Filosofía</h3><p>Crecimiento sostenido antes que picos de atención. Cada acción alimenta a la siguiente.</p></article>
           <article><h3>Enfoque</h3><p>Diagnóstico primero, ejecución después. Priorizamos donde tu marca pierde más energía.</p></article>
           <article><h3>Confianza digital</h3><p>Datos claros, automatización con criterio y comunicación transparente en cada etapa.</p></article>
-          <article><h3>El equipo</h3><p>Estrategas, diseñadores, especialistas en medios y desarrolladores trabajando en un mismo tablero.</p></article>
+          <article><h3>Cómo aportamos</h3><p>Un enfoque integrado de estrategia, contenido, medios, experiencia digital, datos y tecnología, coordinado según las necesidades de cada proyecto.</p></article>
         </div>
       </div>
     </section>
 
     <section id="servicios" class="services" aria-labelledby="services-title">
       <div class="wrap">
-        <h2 id="services-title">Todo lo que tu marca necesita para sonar más fuerte</h2>
+        <h2 id="services-title">Capacidades conectadas a lo que tu empresa necesita</h2>
         <div class="svc">
-          <article><h3>Estrategia digital</h3><p>Posicionamiento, propuesta de valor y hoja de ruta de canales para los próximos 12 meses.</p><small>Fase Discover</small></article>
-          <article><h3>Marketing de contenidos y social</h3><p>Líneas editoriales, producción y comunidad que construyen reconocimiento y confianza.</p><small>Fase Amplify</small></article>
-          <article><h3>Paid Media</h3><p>Campañas en Meta, Google y TikTok con presupuesto medido y creatividades en prueba constante.</p><small>Fase Amplify</small></article>
-          <article><h3>Desarrollo web y e-commerce</h3><p>Sitios rápidos y tiendas que convierten visitas en conversaciones y ventas.</p><small>Fase Connect</small></article>
-          <article><h3>Inteligencia artificial</h3><p>Asistentes, análisis y producción de contenido con IA aplicada a tu operación real.</p><small>Fase Evolve</small></article>
-          <article><h3>Automatización</h3><p>Seguimiento de leads, reportes y respuestas que funcionan solos, sin perder el trato humano.</p><small>Fase Evolve</small></article>
+          <article><small>DISCOVER</small><h3>Definir una dirección</h3><p>Estrategia, posicionamiento, propuesta de valor, identidad y ecosistema digital.</p></article>
+          <article><small>AMPLIFY</small><h3>Ganar visibilidad y demanda</h3><p>SEO, contenidos, social media, paid media, reputación y visibilidad.</p></article>
+          <article><small>CONNECT</small><h3>Convertir interés en oportunidades</h3><p>Web y e-commerce, landing pages, formularios, captación, CRM, WhatsApp Business y seguimiento comercial.</p></article>
+          <article><small>EVOLVE</small><h3>Mejorar la relación y los resultados</h3><p>Experiencia de cliente, email marketing, remarketing, fidelización, analítica y optimización.</p></article>
+          <article class="svc-capability"><small>CAPAS TRANSVERSALES</small><h3>Potenciar todo el circuito</h3><p>IA, automatización y ciberseguridad/confianza digital integradas donde aportan valor.</p></article>
         </div>
       </div>
     </section>
@@ -175,7 +159,7 @@
       <div class="wrap">
         <div class="flow-head">
           <h2 id="flow-title">VIBE FLOW: un circuito que nunca se detiene</h2>
-          <p>Cada ciclo termina donde empieza el siguiente. Selecciona una fase para detener la señal y conocerla.</p>
+          <p>DISCOVER → AMPLIFY → CONNECT → EVOLVE: cuatro fases en orden, como un circuito continuo donde EVOLVE alimenta un nuevo DISCOVER. Activamos lo que tu empresa necesita; no son paquetes cerrados.</p>
         </div>
         <div class="stage">
           <svg id="loop" viewBox="0 0 800 380" role="img" aria-label="Circuito infinito con cuatro fases: Discover, Amplify, Connect y Evolve">
@@ -196,17 +180,14 @@
     <section id="contacto" class="contact" aria-labelledby="contact-title">
       <div class="wrap grid">
         <div class="direct">
-          <h2 id="contact-title">Hablemos de tu frecuencia</h2>
-          <p>Cuéntanos dónde está tu marca hoy. Te responderemos para conversar sobre cómo hacerla crecer.</p>
-          <a href="mailto:hola@digitalvibes.com">hola@digitalvibes.com</a>
+          <h2 id="contact-title">¿Por dónde empezamos?</h2>
+          <p>Elige el camino que mejor encaja con lo que necesitas hoy.</p>
+          <div class="contact-paths">
+            <article><h3>Ya conozco mi necesidad</h3><p>Quiero contratar un servicio o conversar sobre un proyecto.</p><p class="contact-email-address" id="contact-email-address">hola@digitalvibes.com</p><button class="btn primary" type="button" data-copy-email>Copiar correo de contacto</button></article>
+            <article><h3>No sé por qué empezar</h3><p>Quiero conocer el estado digital de mi negocio y recibir un mapa de crecimiento gratuito.</p><a class="btn ghost" href="#diagnostico">Realizar diagnóstico</a></article>
+          </div>
         </div>
-        <form id="contact-form">
-          <label for="contact-name">Nombre<input id="contact-name" name="name" autocomplete="name" required></label>
-          <label for="contact-email">Correo electrónico<input id="contact-email" type="email" name="email" autocomplete="email" required></label>
-          <label for="contact-message">¿Qué quieres lograr?<textarea id="contact-message" name="message" required></textarea></label>
-          <button class="btn primary" type="submit">Enviar mensaje</button>
-          <p class="form-status" id="form-status" aria-live="polite"></p>
-        </form>
+        <p class="form-status contact-copy-status" data-copy-email-status aria-live="polite"></p>
       </div>
     </section>
   </main>

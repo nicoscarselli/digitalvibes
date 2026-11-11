@@ -63,21 +63,61 @@
     });
   });
 
-  const revealItems = document.querySelectorAll("main section");
+  const revealSelectors = [
+    ".hero .wrap > *",
+    ".assessment-intro > *",
+    ".assessment-panel",
+    ".about .txt > *",
+    ".pillars article",
+    ".services .wrap > *",
+    ".svc article",
+    ".flow-head > *",
+    ".stage",
+    ".flow .panel",
+    ".contact .direct > *",
+    ".contact-paths article"
+  ];
+  let revealObserver = null;
   if ("IntersectionObserver" in window && !reducedMotion) {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
+    revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.animate(
-            [{ opacity: 0, transform: "translateY(16px)" }, { opacity: 1, transform: "translateY(0)" }],
-            { duration: 550, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" }
-          );
+          entry.target.classList.add("is-visible");
+          entry.target.classList.remove("reveal-pending");
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.08 });
-    revealItems.forEach((item) => revealObserver.observe(item));
+    }, { threshold: 0.12, rootMargin: "0px 0px -5% 0px" });
   }
+
+  function observeRevealItems(items) {
+    if (!revealObserver) return;
+    items.forEach((item, index) => {
+      if (item.classList.contains("is-visible")) return;
+      item.classList.add("reveal-pending");
+      item.style.setProperty("--reveal-delay", `${Math.min(index % 5, 4) * 90}ms`);
+      revealObserver.observe(item);
+    });
+  }
+
+  if (revealObserver) {
+    observeRevealItems(document.querySelectorAll(revealSelectors.join(",")));
+  }
+
+  const scrollProgress = document.querySelector("[data-scroll-progress]");
+  let scrollFrame = 0;
+  function updateScrollProgress() {
+    if (!scrollProgress) return;
+    scrollFrame = 0;
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
+    scrollProgress.style.transform = `scaleX(${Math.min(Math.max(progress, 0), 1)})`;
+  }
+  window.addEventListener("scroll", () => {
+    if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateScrollProgress);
+  }, { passive: true });
+  window.addEventListener("resize", updateScrollProgress, { passive: true });
+  updateScrollProgress();
 
   const canvas = document.querySelector("#waves");
   const context = canvas?.getContext("2d", { alpha: true });
@@ -329,7 +369,7 @@
     const dimensions = [
       {
         id: "foundations",
-        name: "Digital foundations",
+        name: "Digital strategy and foundations",
         questions: [
           "How clearly defined is your digital value proposition and target audience?",
           "How connected and consistently maintained are your website, analytics, and core digital tools?",
@@ -341,7 +381,7 @@
       },
       {
         id: "demand",
-        name: "Demand generation",
+        name: "Visibility and demand generation",
         questions: [
           "How consistently do you publish useful content for the people you want to reach?",
           "How systematically do you attract qualified prospects through search, social, or paid media?",
@@ -353,7 +393,7 @@
       },
       {
         id: "conversion",
-        name: "Conversion",
+        name: "Conversion and sales",
         questions: [
           "How easy is it for a potential customer to take the next step on your website?",
           "How consistently do you follow up with new leads and track their progress?",
@@ -365,7 +405,7 @@
       },
       {
         id: "loyalty",
-        name: "Customer loyalty",
+        name: "Customer loyalty and growth",
         questions: [
           "How consistently do you stay in touch with customers after their first purchase or project?",
           "How do you collect and act on customer feedback, reviews, or satisfaction signals?",
@@ -377,7 +417,7 @@
       },
       {
         id: "automation",
-        name: "AI & automation",
+        name: "AI and automation",
         questions: [
           "How clearly have you identified repetitive tasks that could be improved with automation?",
           "How regularly does your team use AI tools within clear, reviewed workflows?",
@@ -389,7 +429,7 @@
       },
       {
         id: "security",
-        name: "Digital security",
+        name: "Security and digital protection",
         questions: [
           "How consistently do you use strong passwords and multi-factor authentication on business accounts?",
           "How clearly do you manage access, backups, and updates across your essential digital tools?",
@@ -403,7 +443,7 @@
     if (!isEnglish) {
       const spanishDimensions = [
         {
-          name: "Base digital",
+          name: "Estrategia y fundamentos digitales",
           questions: [
             "¿Qué tan clara está la propuesta de valor digital de tu negocio y a quién se dirige?",
             "¿Qué tan conectados y actualizados están tu sitio web, tus analíticas y tus herramientas digitales principales?",
@@ -414,7 +454,7 @@
           action: "Mapea el recorrido de tus clientes, revisa tu sitio y tus analíticas, y define algunos indicadores clave."
         },
         {
-          name: "Generación de demanda",
+          name: "Visibilidad y generación de demanda",
           questions: [
             "¿Con qué constancia publicas contenido útil para las personas a las que quieres llegar?",
             "¿Qué tan sistemáticamente atraes potenciales clientes mediante búsquedas, redes sociales o publicidad?",
@@ -425,7 +465,7 @@
           action: "Elige una audiencia prioritaria, establece una frecuencia de publicación y mide las oportunidades por canal."
         },
         {
-          name: "Conversión",
+          name: "Conversión y ventas",
           questions: [
             "¿Qué tan fácil es para un cliente potencial dar el siguiente paso en tu sitio web?",
             "¿Con qué constancia haces seguimiento de nuevos contactos y registras su avance?",
@@ -436,7 +476,7 @@
           action: "Revisa tu página más importante, elimina su principal fricción y asigna quién hará el seguimiento."
         },
         {
-          name: "Fidelización",
+          name: "Fidelización y crecimiento",
           questions: [
             "¿Con qué constancia mantienes el contacto después de la primera compra o proyecto?",
             "¿Cómo recoges y aprovechas las opiniones, reseñas o señales de satisfacción de tus clientes?",
@@ -458,7 +498,7 @@
           action: "Elige una tarea repetitiva de bajo riesgo, documenta sus pasos y prueba una automatización supervisada."
         },
         {
-          name: "Seguridad digital",
+          name: "Seguridad y protección digital",
           questions: [
             "¿Con qué constancia usas contraseñas seguras y autenticación multifactor en las cuentas del negocio?",
             "¿Qué tan bien gestionas los accesos, las copias de seguridad y las actualizaciones de tus herramientas?",
@@ -517,15 +557,7 @@
       priorityLabel: (number, score) => `Priority ${number} · ${score}%`,
       frontierLabel: (score) => `Growth frontier · ${score}%`,
       strengthFallback: "This is one of your highest-scoring dimensions. Use it as a place to start building and measure your progress.",
-      growthOpportunity: (action) => `You are already strong here. Explore this next-level experiment: ${action}`,
-      reviewAction: "Review your chosen measures in 30 days and refine the next priority based on what you learn.",
-      emailSubject: "My Digital Vibes strategy session",
-      emailGreeting: "Hello Digital Vibes,",
-      emailIntro: "I would like to discuss my digital assessment results.",
-      scoreLabel: "Digital maturity",
-      emailName: "Name",
-      email: "Work email",
-      company: "Company"
+      growthOpportunity: (action) => `You are already strong here. Explore this next-level experiment: ${action}`
     } : {
       question: (current, total) => `Pregunta ${current} de ${total}`,
       next: "Siguiente pregunta →",
@@ -538,15 +570,7 @@
       priorityLabel: (number, score) => `Prioridad ${number} · ${score}%`,
       frontierLabel: (score) => `Oportunidad de crecimiento · ${score}%`,
       strengthFallback: "Esta es una de tus dimensiones mejor puntuadas. Puedes tomarla como punto de partida y medir tus avances.",
-      growthOpportunity: (action) => `Ya tienes una buena base en esta dimensión. Como próximo experimento, podrías: ${action}`,
-      reviewAction: "Revisa tus indicadores dentro de 30 días y ajusta las próximas prioridades según lo aprendido.",
-      emailSubject: "Mi sesión estratégica con Digital Vibes",
-      emailGreeting: "Hola Digital Vibes,",
-      emailIntro: "Quisiera conversar sobre los resultados de mi diagnóstico digital.",
-      scoreLabel: "Madurez digital",
-      emailName: "Nombre",
-      email: "Correo de trabajo",
-      company: "Empresa"
+      growthOpportunity: (action) => `Ya tienes una buena base en esta dimensión. Como próximo experimento, podrías: ${action}`
     };
     const views = assessment.querySelectorAll("[data-assessment-view]");
     const questionTitle = assessment.querySelector("[data-assessment-question]");
@@ -556,10 +580,8 @@
     const progress = assessment.querySelector("[data-assessment-progress]");
     const nextButton = assessment.querySelector("[data-assessment-next]");
     const backButtons = assessment.querySelectorAll("[data-assessment-back]");
-    const contactForm = assessment.querySelector("[data-assessment-form]");
     const answers = Array(questions.length).fill(null);
     let questionIndex = 0;
-    let contactDetails = null;
 
     function showView(name) {
       views.forEach((view) => {
@@ -594,6 +616,7 @@
         option.append(input, text);
         return option;
       }));
+      observeRevealItems(options.querySelectorAll(".assessment-option"));
       nextButton.disabled = answers[questionIndex] === null;
       nextButton.textContent = questionIndex === questions.length - 1
         ? copy.finish
@@ -685,33 +708,61 @@
       }));
 
       const actionPlan = assessment.querySelector("[data-assessment-action-plan]");
-      actionPlan.replaceChildren(...prioritized.map((dimension) => {
-        const item = document.createElement("li");
-        item.textContent = dimension.action;
-        return item;
+      const dimension = (id) => results.scores.find((item) => item.id === id);
+      const fundamentals = prioritized[0];
+      const demand = dimension("demand");
+      const conversion = dimension("conversion");
+      const automation = dimension("automation");
+      const loyalty = dimension("loyalty");
+      const roadmap = isEnglish ? [
+        {
+          title: "Months 1–3 · Foundations",
+          text: `Resolve the main blocker: ${fundamentals.opportunity} ${fundamentals.action}`
+        },
+        {
+          title: "Months 4–6 · Activation",
+          text: `Improve visibility and lead generation: ${demand.opportunity} ${conversion.action}`
+        },
+        {
+          title: "Months 7–9 · Optimization",
+          text: `${automation.opportunity} Review performance data and automate one repeatable, low-risk process.`
+        },
+        {
+          title: "Months 10–12 · Consolidation",
+          text: `${loyalty.action} Review results and use what you learned to start a new DISCOVER cycle.`
+        }
+      ] : [
+        {
+          title: "Meses 1–3 · Fundamentos",
+          text: `Resuelve el principal bloqueo: ${fundamentals.opportunity} ${fundamentals.action}`
+        },
+        {
+          title: "Meses 4–6 · Activación",
+          text: `Refuerza visibilidad y captación: ${demand.opportunity} ${conversion.action}`
+        },
+        {
+          title: "Meses 7–9 · Optimización",
+          text: `${automation.opportunity} Revisa los datos de rendimiento y automatiza un proceso repetible de bajo riesgo.`
+        },
+        {
+          title: "Meses 10–12 · Consolidación",
+          text: `${loyalty.action} Evalúa los resultados y usa lo aprendido para iniciar un nuevo ciclo DISCOVER.`
+        }
+      ];
+      actionPlan.replaceChildren(...roadmap.map((stage) => {
+        const article = document.createElement("article");
+        article.className = "assessment-roadmap-stage";
+        const title = document.createElement("h4");
+        title.textContent = stage.title;
+        const description = document.createElement("p");
+        description.textContent = stage.text;
+        article.append(title, description);
+        return article;
       }));
-      if (prioritized.length < 3) {
-        const reviewStep = document.createElement("li");
-        reviewStep.textContent = copy.reviewAction;
-        actionPlan.append(reviewStep);
-      }
-
-      const resultSummary = [
-        `${copy.scoreLabel}: ${results.score}% (${results.level.name})`,
-        ...results.scores.map((dimension) => `${dimension.name}: ${dimension.percentage}%`)
-      ].join("\n");
-      const emailSubject = encodeURIComponent(copy.emailSubject);
-      const emailBody = encodeURIComponent(
-        `${copy.emailGreeting}\n\n${copy.emailIntro}\n\n` +
-        `${resultSummary}\n\n${copy.emailName}: ${contactDetails.name}\n${copy.email}: ${contactDetails.email}\n${copy.company}: ${contactDetails.company}`
-      );
-      assessment.querySelector("[data-assessment-email]").href =
-        `mailto:hola@digitalvibes.com?subject=${emailSubject}&body=${emailBody}`;
-      const priorityNames = prioritized.map((dimension) => dimension.name).join(isEnglish ? " and " : " y ");
-      const whatsappText = encodeURIComponent(isEnglish
-        ? `I completed the Digital Vibes assessment: ${results.score}% (${results.level.name}). My priority areas are ${priorityNames}.`
-        : `Completé el diagnóstico de Digital Vibes: ${results.score}% (${results.level.name}). Mis áreas prioritarias son ${priorityNames}.`);
-      assessment.querySelector("[data-assessment-whatsapp]").href = `https://wa.me/?text=${whatsappText}`;
+      observeRevealItems(assessment.querySelectorAll(
+        ".assessment-dimension, .assessment-insights li, .assessment-opportunity, .assessment-roadmap-stage"
+      ));
+      return results;
     }
 
     assessment.querySelector("[data-assessment-start]").addEventListener("click", () => {
@@ -727,62 +778,38 @@
         renderQuestion();
         questionTitle.focus({ preventScroll: true });
       } else {
-        showView("contact");
-        assessment.querySelector("#assessment-name").focus({ preventScroll: true });
+        renderResults();
+        showView("results");
+        assessment.querySelector("#assessment-results-title").focus({ preventScroll: true });
       }
     });
     backButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        if (button.closest('[data-assessment-view="contact"]')) {
-          showView("quiz");
-          renderQuestion();
-          questionTitle.focus({ preventScroll: true });
-        } else if (questionIndex > 0) {
+        if (questionIndex > 0) {
           questionIndex -= 1;
           renderQuestion();
           questionTitle.focus({ preventScroll: true });
         }
       });
     });
-    contactForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      if (!contactForm.reportValidity()) return;
-      const formData = new FormData(contactForm);
-      contactDetails = {
-        name: String(formData.get("name")),
-        email: String(formData.get("email")),
-        company: String(formData.get("company"))
-      };
-      renderResults();
-      showView("results");
-      assessment.querySelector("#assessment-results-title").focus({ preventScroll: true });
-    });
     assessment.querySelector("[data-assessment-restart]").addEventListener("click", () => {
       answers.fill(null);
-      contactForm.reset();
-      contactDetails = null;
       questionIndex = 0;
       showView("intro");
     });
   }
 
-  const contactForm = document.querySelector("#contact-form");
-  const formStatus = document.querySelector("#form-status");
-  contactForm?.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (!contactForm.reportValidity()) return;
-    const formData = new FormData(contactForm);
-    const subject = encodeURIComponent(isEnglish ? "Website inquiry — Digital Vibes" : "Consulta desde el sitio — Digital Vibes");
-    const body = encodeURIComponent(
-      `${isEnglish ? "Name" : "Nombre"}: ${formData.get("name")}\n` +
-      `${isEnglish ? "Email" : "Correo"}: ${formData.get("email")}\n\n` +
-      `${isEnglish ? "Message" : "Mensaje"}:\n${formData.get("message")}`
-    );
-    if (formStatus) {
-      formStatus.textContent = isEnglish
-        ? "Your email app will open with the message ready to send."
-        : "Se abrirá tu aplicación de correo con el mensaje listo para enviar.";
+  const copyEmailButton = document.querySelector("[data-copy-email]");
+  const copyEmailStatus = document.querySelector("[data-copy-email-status]");
+  copyEmailButton?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText("hola@digitalvibes.com");
+      copyEmailStatus.textContent = isEnglish ? "Email address copied." : "Correo copiado.";
+    } catch (error) {
+      console.warn("The contact email could not be copied.", error);
+      copyEmailStatus.textContent = isEnglish
+        ? "Copy hola@digitalvibes.com to contact us."
+        : "Copia hola@digitalvibes.com para escribirnos.";
     }
-    window.location.href = `mailto:hola@digitalvibes.com?subject=${subject}&body=${body}`;
   });
 })();
