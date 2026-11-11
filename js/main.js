@@ -21,7 +21,7 @@
   }
   const initialTheme = savedTheme === "light" || savedTheme === "dark"
     ? savedTheme
-    : "light";
+    : "dark";
 
   function setTheme(theme) {
     root.dataset.theme = theme;
@@ -66,19 +66,24 @@
   const revealSelectors = [
     ".hero .wrap > *",
     ".assessment-intro > *",
-    ".assessment-panel",
+    ".assessment-score-card",
     ".about .txt > *",
+    ".about-visual",
     ".pillars article",
-    ".services .wrap > *",
+    ".services h2",
     ".svc article",
     ".flow-head > *",
     ".stage",
     ".flow .panel",
-    ".contact .direct > *",
+    ".contact h2",
     ".contact-paths article"
   ];
+  const gsapEnabled = Boolean(window.gsap && window.ScrollTrigger && !reducedMotion);
   let revealObserver = null;
-  if ("IntersectionObserver" in window && !reducedMotion) {
+  if (gsapEnabled) {
+    window.gsap.registerPlugin(window.ScrollTrigger);
+    root.classList.add("gsap-ready");
+  } else if ("IntersectionObserver" in window && !reducedMotion) {
     revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -91,17 +96,79 @@
   }
 
   function observeRevealItems(items) {
-    if (!revealObserver) return;
-    items.forEach((item, index) => {
-      if (item.classList.contains("is-visible")) return;
-      item.classList.add("reveal-pending");
-      item.style.setProperty("--reveal-delay", `${Math.min(index % 5, 4) * 90}ms`);
-      revealObserver.observe(item);
-    });
+    const revealList = Array.from(items);
+    if (gsapEnabled) {
+      revealList.forEach((item, index) => {
+        if (item.dataset.gsapReveal === "true") return;
+        item.dataset.gsapReveal = "true";
+        window.gsap.fromTo(item, {
+          autoAlpha: 0,
+          y: 34,
+          scale: .985
+        }, {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          duration: .85,
+          delay: (index % 4) * .075,
+          ease: "power3.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 88%",
+            once: true
+          }
+        });
+      });
+      return;
+    }
+    if (revealObserver) {
+      revealList.forEach((item, index) => {
+        if (item.classList.contains("is-visible")) return;
+        item.classList.add("reveal-pending");
+        item.style.setProperty("--reveal-delay", `${Math.min(index % 5, 4) * 90}ms`);
+        revealObserver.observe(item);
+      });
+    }
   }
 
-  if (revealObserver) {
+  if (gsapEnabled || revealObserver) {
     observeRevealItems(document.querySelectorAll(revealSelectors.join(",")));
+  }
+  document.querySelectorAll(".svc article").forEach((card) => {
+    card.addEventListener("pointermove", (event) => {
+      const bounds = card.getBoundingClientRect();
+      card.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
+      card.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
+    }, { passive: true });
+  });
+  if (gsapEnabled) {
+    const heroTitle = document.querySelector("#hero-title");
+    const aboutVisual = document.querySelector(".about-visual");
+    if (heroTitle) {
+      window.gsap.to(heroTitle, {
+        yPercent: -12,
+        ease: "none",
+        scrollTrigger: { trigger: "#top", start: "top top", end: "bottom top", scrub: .6 }
+      });
+    }
+    if (aboutVisual) {
+      window.gsap.to(aboutVisual, {
+        yPercent: -6,
+        ease: "none",
+        scrollTrigger: { trigger: aboutVisual, start: "top bottom", end: "bottom top", scrub: .8 }
+      });
+    }
+    const energyPath = document.querySelector(".energy-path");
+    if (energyPath) {
+      energyPath.style.animation = "none";
+      window.gsap.to(energyPath, {
+        strokeDashoffset: -100,
+        duration: 3.2,
+        ease: "none",
+        repeat: -1
+      });
+    }
   }
 
   const scrollProgress = document.querySelector("[data-scroll-progress]");
@@ -584,9 +651,25 @@
     let questionIndex = 0;
 
     function showView(name) {
+      let activeView;
       views.forEach((view) => {
         view.hidden = view.dataset.assessmentView !== name;
+        if (!view.hidden) activeView = view;
       });
+      if (activeView) {
+        observeRevealItems(activeView.querySelectorAll(
+          "h2, h3, .assessment-score-card, .assessment-results-grid > section, .assessment-priorities, .assessment-action-plan, .assessment-cta, .assessment-controls"
+        ));
+      }
+      if (activeView && gsapEnabled) {
+        window.gsap.fromTo(activeView, { autoAlpha: 0, y: 22 }, {
+          autoAlpha: 1,
+          y: 0,
+          duration: .55,
+          ease: "power2.out",
+          clearProps: "transform,opacity,visibility"
+        });
+      }
       assessment.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
     }
 
@@ -594,6 +677,15 @@
       const question = questions[questionIndex];
       questionTitle.textContent = question.text;
       questionTitle.tabIndex = -1;
+      if (gsapEnabled) {
+        window.gsap.fromTo(questionTitle, { autoAlpha: 0, y: 12 }, {
+          autoAlpha: 1,
+          y: 0,
+          duration: .35,
+          ease: "power2.out",
+          clearProps: "transform,opacity,visibility"
+        });
+      }
       dimensionLabel.textContent = dimensions[question.dimensionIndex].name;
       countLabel.textContent = copy.question(questionIndex + 1, questions.length);
       progress.setAttribute("aria-valuenow", String(questionIndex + 1));
@@ -767,8 +859,8 @@
 
     assessment.querySelector("[data-assessment-start]").addEventListener("click", () => {
       questionIndex = 0;
-      renderQuestion();
       showView("quiz");
+      renderQuestion();
       questionTitle.focus({ preventScroll: true });
     });
     nextButton.addEventListener("click", () => {
@@ -778,8 +870,8 @@
         renderQuestion();
         questionTitle.focus({ preventScroll: true });
       } else {
-        renderResults();
         showView("results");
+        renderResults();
         assessment.querySelector("#assessment-results-title").focus({ preventScroll: true });
       }
     });

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-theme="light">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +21,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
   <script src="js/main.js" defer></script>
 </head>
 <body>
@@ -49,7 +51,7 @@
   </header>
 
   <main id="contenido">
-    <section class="hero" id="top" aria-labelledby="hero-title">
+    <section class="hero ambient-section" id="top" aria-labelledby="hero-title">
       <canvas id="waves" aria-hidden="true"></canvas>
       <div class="wrap">
         <h1 id="hero-title">Tu marca tiene una <strong>frecuencia propia.</strong> Hagamos que llegue más lejos</h1>
@@ -57,6 +59,11 @@
         <div class="cta">
           <a class="btn primary" href="#diagnostico">Evaluar mi madurez digital gratis</a>
           <a class="btn ghost" href="#vibe-flow">Conocer cómo trabajamos</a>
+        </div>
+        <div class="hero-proof" aria-label="Diagnóstico gratuito de 18 preguntas y mapa de crecimiento a 12 meses">
+          <span class="signal-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>18 preguntas</span><span class="proof-divider" aria-hidden="true"></span><span>3–5 minutos</span>
+          <span class="proof-divider" aria-hidden="true"></span><span>Mapa de crecimiento · 12 meses</span>
         </div>
       </div>
     </section>
@@ -126,13 +133,48 @@
       </div>
     </section>
 
-    <section id="sobre" class="about" aria-labelledby="about-title">
+    <section id="sobre" class="about ambient-section" aria-labelledby="about-title">
       <div class="wrap grid">
         <div class="txt">
           <h2 id="about-title">Espíritu digital en movimiento</h2>
           <p>Ayudamos a pequeños negocios, pymes y empresas a entender dónde están, decidir qué priorizar y conectar sus acciones digitales con objetivos de crecimiento medibles.</p>
           <p>Integramos estrategia, marketing, experiencia digital y tecnología en un circuito flexible, ajustado a las necesidades y capacidades reales de cada empresa.</p>
         </div>
+        <figure class="about-visual reveal-art">
+          <svg viewBox="0 0 640 460" role="img" aria-labelledby="growth-visual-title growth-visual-description">
+            <title id="growth-visual-title">Ecosistema digital en movimiento</title>
+            <desc id="growth-visual-description">Una visualización abstracta de señales, datos y oportunidades conectadas en un mapa de crecimiento.</desc>
+            <defs>
+              <linearGradient id="visual-gradient" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#9b5cff"/><stop offset="1" stop-color="#33d6dc"/></linearGradient>
+              <radialGradient id="visual-glow"><stop stop-color="#8d4ff5" stop-opacity=".42"/><stop offset="1" stop-color="#8d4ff5" stop-opacity="0"/></radialGradient>
+              <pattern id="visual-grid" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#d9d4ff" fill-opacity=".26"/></pattern>
+              <filter id="visual-shadow" x="-.4" y="-.4" width="1.8" height="1.8"><feGaussianBlur stdDeviation="16"/></filter>
+            </defs>
+            <circle cx="326" cy="220" r="196" fill="url(#visual-glow)" filter="url(#visual-shadow)"/>
+            <rect x="44" y="36" width="552" height="388" rx="34" fill="url(#visual-grid)" opacity=".55"/>
+            <path d="M66 265c60 0 60-86 120-86s60 118 120 118 60-155 120-155 60 92 148 92" fill="none" stroke="url(#visual-gradient)" stroke-width="2" opacity=".22"/>
+            <path d="M66 286c60 0 60-57 120-57s60 84 120 84 60-116 120-116 60 67 148 67" fill="none" stroke="url(#visual-gradient)" stroke-width="3" opacity=".58"/>
+            <path d="M66 306c60 0 60-31 120-31s60 48 120 48 60-78 120-78 60 43 148 43" fill="none" stroke="url(#visual-gradient)" stroke-width="2" opacity=".28"/>
+            <g fill="#aafaff">
+              <circle cx="186" cy="229" r="4"/><circle cx="306" cy="313" r="4"/><circle cx="426" cy="197" r="5"/><circle cx="574" cy="264" r="4"/>
+            </g>
+            <g class="visual-card">
+              <rect x="78" y="76" width="224" height="112" rx="18" fill="#11101c" fill-opacity=".72" stroke="#c7b5ff" stroke-opacity=".3"/>
+              <text x="100" y="108" fill="#b8b2ca" font-size="12" font-family="Manrope,sans-serif">MAPA DE CRECIMIENTO</text>
+              <text x="100" y="146" fill="#f7f4ff" font-size="27" font-weight="700" font-family="Manrope,sans-serif">12 meses</text>
+              <path d="M214 155l18-16 17 7 22-25" fill="none" stroke="#58e2df" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="271" cy="121" r="4" fill="#58e2df"/>
+            </g>
+            <g class="visual-card visual-card-lower">
+              <rect x="354" y="278" width="220" height="100" rx="18" fill="#11101c" fill-opacity=".76" stroke="#58e2df" stroke-opacity=".28"/>
+              <circle cx="384" cy="313" r="8" fill="#9b5cff"/><circle cx="412" cy="313" r="8" fill="#58e2df" fill-opacity=".8"/>
+              <rect x="378" y="338" width="146" height="5" rx="3" fill="#f7f4ff" fill-opacity=".12"/>
+              <rect x="378" y="338" width="104" height="5" rx="3" fill="url(#visual-gradient)"/>
+              <text x="434" y="317" fill="#e9e5f4" font-size="12" font-family="Manrope,sans-serif">OPORTUNIDADES</text>
+            </g>
+          </svg>
+          <figcaption>Una estrategia conectada transforma datos en decisiones y oportunidades.</figcaption>
+        </figure>
         <div class="pillars">
           <article><h3>Filosofía</h3><p>Crecimiento sostenido antes que picos de atención. Cada acción alimenta a la siguiente.</p></article>
           <article><h3>Enfoque</h3><p>Diagnóstico primero, ejecución después. Priorizamos donde tu marca pierde más energía.</p></article>
@@ -142,20 +184,20 @@
       </div>
     </section>
 
-    <section id="servicios" class="services" aria-labelledby="services-title">
+    <section id="servicios" class="services ambient-section" aria-labelledby="services-title">
       <div class="wrap">
         <h2 id="services-title">Capacidades conectadas a lo que tu empresa necesita</h2>
         <div class="svc">
-          <article><small>DISCOVER</small><h3>Definir una dirección</h3><p>Estrategia, posicionamiento, propuesta de valor, identidad y ecosistema digital.</p></article>
-          <article><small>AMPLIFY</small><h3>Ganar visibilidad y demanda</h3><p>SEO, contenidos, social media, paid media, reputación y visibilidad.</p></article>
-          <article><small>CONNECT</small><h3>Convertir interés en oportunidades</h3><p>Web y e-commerce, landing pages, formularios, captación, CRM, WhatsApp Business y seguimiento comercial.</p></article>
-          <article><small>EVOLVE</small><h3>Mejorar la relación y los resultados</h3><p>Experiencia de cliente, email marketing, remarketing, fidelización, analítica y optimización.</p></article>
-          <article class="svc-capability"><small>CAPAS TRANSVERSALES</small><h3>Potenciar todo el circuito</h3><p>IA, automatización y ciberseguridad/confianza digital integradas donde aportan valor.</p></article>
+          <article><span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M5 24h7l5-12 8 24 7-18 5 10h6"/><circle cx="40" cy="28" r="2"/></svg></span><small>DISCOVER</small><h3>Definir una dirección</h3><p>Estrategia, posicionamiento, propuesta de valor, identidad y ecosistema digital.</p></article>
+          <article><span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M6 35V25m9 10V17m9 18V10m9 25V20m9 15V13"/><path d="M5 40h38"/></svg></span><small>AMPLIFY</small><h3>Ganar visibilidad y demanda</h3><p>SEO, contenidos, social media, paid media, reputación y visibilidad.</p></article>
+          <article><span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="17" cy="24" r="10"/><circle cx="31" cy="24" r="10"/><path d="M21 24h6M24 7v4m0 26v4"/></svg></span><small>CONNECT</small><h3>Convertir interés en oportunidades</h3><p>Web y e-commerce, landing pages, formularios, captación, CRM, WhatsApp Business y seguimiento comercial.</p></article>
+          <article><span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M10 26c0-8 6-14 14-14 5 0 9 2 12 6l4-1-2 10-9-5 4-2a11 11 0 0 0-19 6"/><path d="M38 22c0 8-6 14-14 14-5 0-9-2-12-6l-4 1 2-10 9 5-4 2a11 11 0 0 0 19-6"/></svg></span><small>EVOLVE</small><h3>Mejorar la relación y los resultados</h3><p>Experiencia de cliente, email marketing, remarketing, fidelización, analítica y optimización.</p></article>
+          <article class="svc-capability"><span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="5"/><circle cx="9" cy="12" r="3"/><circle cx="39" cy="12" r="3"/><circle cx="9" cy="36" r="3"/><circle cx="39" cy="36" r="3"/><path d="m13 14 7 7m8 0 7-7m-22 20 7-7m8 0 7 7"/></svg></span><small>CAPAS TRANSVERSALES</small><h3>Potenciar todo el circuito</h3><p>IA, automatización y ciberseguridad/confianza digital integradas donde aportan valor.</p></article>
         </div>
       </div>
     </section>
 
-    <section id="vibe-flow" class="flow" aria-labelledby="flow-title">
+    <section id="vibe-flow" class="flow ambient-section" aria-labelledby="flow-title">
       <div class="wrap">
         <div class="flow-head">
           <h2 id="flow-title">VIBE FLOW: un circuito que nunca se detiene</h2>
@@ -166,6 +208,7 @@
             <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#7E30E1"/><stop offset="1" stop-color="#37B5B6"/></linearGradient></defs>
             <path id="path" class="glow" d="M400 190 C480 60 710 40 710 190 C710 340 480 320 400 190 C320 60 90 40 90 190 C90 340 320 320 400 190Z"/>
             <path class="track" d="M400 190 C480 60 710 40 710 190 C710 340 480 320 400 190 C320 60 90 40 90 190 C90 340 320 320 400 190Z"/>
+            <path class="energy-path" d="M400 190 C480 60 710 40 710 190 C710 340 480 320 400 190 C320 60 90 40 90 190 C90 340 320 320 400 190Z" pathLength="1000" aria-hidden="true"/>
             <g id="nodes"></g>
             <circle id="pulse" r="7" cx="400" cy="190"/>
           </svg>
@@ -177,7 +220,7 @@
       </div>
     </section>
 
-    <section id="contacto" class="contact" aria-labelledby="contact-title">
+    <section id="contacto" class="contact ambient-section" aria-labelledby="contact-title">
       <div class="wrap grid">
         <div class="direct">
           <h2 id="contact-title">¿Por dónde empezamos?</h2>
