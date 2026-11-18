@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-  <script src="js/main.js" defer></script>
+  <script src="js/main.js?v=20261118-18preguntas" defer></script>
 </head>
 <body>
   <div class="scroll-progress" aria-hidden="true"><span data-scroll-progress></span></div>
@@ -60,9 +60,9 @@
           <a class="btn primary" href="#digital-assessment">Get my free digital maturity assessment</a>
           <a class="btn ghost" href="#vibe-flow">See how we work</a>
         </div>
-        <div class="hero-proof" aria-label="Free 18-question assessment and 12-month growth map">
+        <div class="hero-proof" aria-label="Free 20-question assessment and 12-month growth map">
           <span class="signal-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span>18 questions</span><span class="proof-divider" aria-hidden="true"></span><span>3–5 minutes</span>
+          <span>20 questions</span><span class="proof-divider" aria-hidden="true"></span><span>3–5 minutes</span>
           <span class="proof-divider" aria-hidden="true"></span><span>12-month growth map</span>
         </div>
       </div>
@@ -73,8 +73,8 @@
         <div class="assessment-intro" data-assessment-view="intro">
           <p class="assessment-eyebrow">FIND YOUR DIGITAL VIBE</p>
           <h2 id="assessment-title">Is your business reaching its full digital potential?</h2>
-          <p class="assessment-lede">Answer 18 questions in 3–5 minutes and get a free growth map for your business, including strengths, priority opportunities, and a roadmap for the next 12 months.</p>
-          <div class="assessment-meta"><span>◷ &nbsp;3–5 minutes</span><span>18 questions</span><span>Personalized next steps</span></div>
+          <p class="assessment-lede">Answer 20 questions in 3–5 minutes: 2 optional context questions and 18 required assessment questions across six dimensions.</p>
+          <div class="assessment-meta"><span>◷ &nbsp;3–5 minutes</span><span>20 questions</span><span>18 required assessment answers</span></div>
           <button class="btn primary" type="button" data-assessment-start>Start your assessment <span aria-hidden="true">→</span></button>
           <p class="assessment-note">Designed for small businesses, growing companies, and established enterprises. No obligation.</p>
         </div>
@@ -82,7 +82,7 @@
         <div class="assessment-panel" data-assessment-view="quiz" hidden>
           <div class="assessment-progress">
             <div class="assessment-progress-copy"><span data-assessment-dimension></span><span data-assessment-count aria-live="polite"></span></div>
-            <div class="assessment-progress-track" role="progressbar" aria-label="Assessment progress" aria-valuemin="0" aria-valuemax="18" aria-valuenow="0" data-assessment-progress><span></span></div>
+            <div class="assessment-progress-track" role="progressbar" aria-label="Assessment progress" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0" data-assessment-progress><span></span></div>
           </div>
           <fieldset class="assessment-question">
             <legend data-assessment-question></legend>
@@ -92,41 +92,59 @@
             <button class="btn ghost" type="button" data-assessment-back>← Previous</button>
             <button class="btn primary" type="button" data-assessment-next disabled>Next question →</button>
           </div>
-          <p class="assessment-note">Your assessment is calculated on this page. Your answers are not sent or saved and disappear when you close or reload it.</p>
+          <p class="assessment-note">The two context questions are optional. The 18 assessment questions are required and use a fixed scale from 0 to 4.</p>
         </div>
-
-        <div class="assessment-panel assessment-results" data-assessment-view="results" aria-labelledby="assessment-results-title" hidden>
+        <div class="assessment-panel assessment-complete" data-assessment-view="complete" aria-labelledby="assessment-complete-title" hidden>
           <p class="assessment-eyebrow">YOUR DIGITAL VIBE</p>
-          <h2 id="assessment-results-title">Your digital maturity snapshot</h2>
-          <div class="assessment-score-card">
-            <div class="assessment-score"><span data-assessment-score></span><span class="assessment-score-percent">%</span></div>
-            <div><p class="assessment-level" data-assessment-level></p><p data-assessment-summary></p></div>
-          </div>
-          <div class="assessment-results-grid">
-            <section aria-labelledby="assessment-breakdown-title">
-              <h3 id="assessment-breakdown-title">Your six dimensions</h3>
-              <div class="assessment-breakdown" data-assessment-breakdown></div>
-            </section>
-            <section aria-labelledby="assessment-strengths-title">
-              <h3 id="assessment-strengths-title">Where you are building momentum</h3>
-              <ul class="assessment-insights" data-assessment-strengths></ul>
-            </section>
-          </div>
-          <section class="assessment-priorities" aria-labelledby="assessment-priorities-title">
-            <p class="assessment-eyebrow">FOCUS YOUR NEXT MOVE</p>
-            <h3 id="assessment-priorities-title">Your priority opportunities</h3>
-            <div class="assessment-opportunities" data-assessment-opportunities></div>
-          </section>
-          <section class="assessment-action-plan" aria-labelledby="assessment-action-title">
-            <h3 id="assessment-action-title">Your 12-month growth map</h3>
-            <div class="assessment-roadmap" data-assessment-action-plan></div>
-          </section>
-          <div class="assessment-cta">
-            <h3>What would you like to do next?</h3>
-            <div class="cta">
-              <a class="btn primary" href="#contact">Talk to Digital Vibes about my plan</a>
-              <a class="btn ghost" href="#services">Keep my map for now</a>
+          <h2 id="assessment-complete-title">Your digital maturity snapshot</h2>
+          <p data-assessment-summary>Your result combines score, dimensions, and priorities.</p>
+          <div class="assessment-calculation" aria-label="Calculated scores">
+            <div class="assessment-global-score">
+              <div><span>Global score</span><strong data-assessment-global>0%</strong></div>
+              <p data-assessment-band>Initial</p>
             </div>
+            <section class="assessment-chart" aria-labelledby="assessment-chart-title">
+              <h3 id="assessment-chart-title">Dimension comparison</h3>
+              <div class="assessment-chart-bars" data-assessment-chart role="img" aria-label="Scores for the six dimensions"></div>
+            </section>
+            <div class="assessment-dimension-scores" data-assessment-dimension-scores></div>
+            <section class="assessment-rules" aria-labelledby="assessment-strengths-title">
+              <h3 id="assessment-strengths-title">Strengths</h3>
+              <div data-assessment-strengths></div>
+            </section>
+            <section class="assessment-rules" aria-labelledby="assessment-risks-title">
+              <h3 id="assessment-risks-title">Essential risk alerts</h3>
+              <div data-assessment-risk-alerts></div>
+            </section>
+            <section class="assessment-rules" aria-labelledby="assessment-opportunities-title">
+              <h3 id="assessment-opportunities-title">Growth opportunities</h3>
+              <div data-assessment-opportunities></div>
+            </section>
+            <section class="assessment-roadmap" aria-labelledby="assessment-roadmap-title">
+              <h3 id="assessment-roadmap-title">12-month draft roadmap</h3>
+              <div data-assessment-roadmap></div>
+            </section>
+            <section class="assessment-map-request" aria-labelledby="assessment-map-request-title">
+              <p class="assessment-eyebrow">NEXT STEP</p>
+              <h3 id="assessment-map-request-title">I want to receive my free 12-month growth map</h3>
+              <p class="assessment-map-promise">Turn this diagnosis into concrete priorities, owners, and measurable actions.</p>
+              <form data-assessment-map-form novalidate>
+                <div class="assessment-field">
+                  <label for="assessment-email">Email</label>
+                  <input id="assessment-email" name="email" type="email" autocomplete="email" required>
+                </div>
+                <label class="assessment-consent">
+                  <input name="mapConsent" type="checkbox" required>
+                  <span>I agree to request the growth map and receive it by email.</span>
+                </label>
+                <label class="assessment-consent">
+                  <input name="marketingConsent" type="checkbox">
+                  <span>I agree to receive optional marketing communications from Digital Vibes.</span>
+                </label>
+                <button class="btn primary" type="submit">Send request</button>
+                <p class="assessment-form-status" data-assessment-form-status aria-live="polite"></p>
+              </form>
+            </section>
           </div>
           <button class="btn ghost" type="button" data-assessment-restart>Retake the assessment</button>
         </div>
