@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-  <script src="js/main.js?v=20261118-map4col-v5" defer></script>
+  <script src="js/main.js?v=20261118-parte1-revisada-v6" defer></script>
 </head>
 
 <body>
@@ -115,8 +115,16 @@
             </div>
             <section class="assessment-chart" aria-labelledby="assessment-chart-title">
               <h3 id="assessment-chart-title">Comparativa por dimensión</h3>
-              <div class="assessment-chart-bars" data-assessment-chart role="img"
-                aria-label="Puntuaciones de las seis dimensiones"></div>
+              <div class="assessment-vibe-flow-block">
+                <p class="assessment-block-subtitle">VIBE FLOW · Recorrido principal de 4 etapas</p>
+                <div class="assessment-chart-bars" data-assessment-chart-flow role="img"
+                  aria-label="Puntuaciones de las cuatro etapas del recorrido VIBE FLOW"></div>
+              </div>
+              <div class="assessment-transversal-block">
+                <p class="assessment-block-subtitle">Capacidades transversales</p>
+                <div class="assessment-chart-bars" data-assessment-chart-transversal role="img"
+                  aria-label="Puntuaciones de las dos capacidades transversales"></div>
+              </div>
             </section>
             <div class="assessment-dimension-scores" data-assessment-dimension-scores></div>
             <section class="assessment-rules" aria-labelledby="assessment-strengths-title">
@@ -130,10 +138,6 @@
             <section class="assessment-rules" aria-labelledby="assessment-opportunities-title">
               <h3 id="assessment-opportunities-title">Oportunidades de crecimiento</h3>
               <div data-assessment-opportunities></div>
-            </section>
-            <section class="assessment-roadmap" aria-labelledby="assessment-roadmap-title">
-              <h3 id="assessment-roadmap-title">Borrador de mapa a 12 meses</h3>
-              <div data-assessment-roadmap></div>
             </section>
             <section class="assessment-map-request" aria-labelledby="assessment-map-request-title">
               <p class="assessment-eyebrow">SIGUIENTE PASO</p>

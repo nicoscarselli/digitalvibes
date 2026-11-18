@@ -456,14 +456,55 @@ const DigitalVibesRecommendations = {
   evaluate(calculation, answersById, contextAnswers, isEnglish) {
     const riskAlerts = [];
     const security = calculation.dimensions.find((dimension) => dimension.id === "security");
-    if (security && security.percentage < 25) {
+    const s1 = answersById.S1 ?? 4;
+    const s2 = answersById.S2 ?? 4;
+    const s3 = answersById.S3 ?? 4;
+
+    const securityBreaches = [];
+    if (s1 <= 1) {
+      securityBreaches.push(
+        isEnglish
+          ? "Account protection: unique/strong passwords, MFA and access review."
+          : "Alerta de protección de cuentas: contraseñas únicas/robustas, MFA y revisión de accesos."
+      );
+    }
+    if (s2 <= 1) {
+      securityBreaches.push(
+        isEnglish
+          ? "Continuity alert: establish reliable backups and test restoration."
+          : "Alerta de continuidad: establecer copias adecuadas y probar restauración."
+      );
+    }
+    if (s3 <= 1) {
+      securityBreaches.push(
+        isEnglish
+          ? "Preparation alert: simple training and incident response procedure."
+          : "Alerta de preparación: formación y procedimiento básico para comunicar y responder."
+      );
+    }
+
+    if (securityBreaches.length > 0) {
+      const isCriticalGeneral = security && security.percentage < 25;
+      const title = isEnglish
+        ? (isCriticalGeneral ? "Essential digital protection controls (<25% security)" : "Essential protection alerts")
+        : (isCriticalGeneral ? "Controles esenciales de protección digital (Seguridad < 25 %)" : "Alertas esenciales de protección digital");
+
+      const generalPreamble = isCriticalGeneral
+        ? (isEnglish
+            ? "Your essential digital protection controls need attention. We detected areas where exposure should be reduced to ensure business recovery capability. "
+            : "Tus controles básicos de protección digital necesitan atención. Hemos detectado aspectos que conviene reforzar para reducir la exposición del negocio y mejorar su capacidad de recuperación. ")
+        : "";
+
+      const explanation = generalPreamble + (isEnglish
+        ? `Identified priorities: ${securityBreaches.join(" ")}`
+        : `Prioridades detectadas: ${securityBreaches.join(" ")}`);
+
       riskAlerts.push({
         id: "security-essential-controls",
         severity: "essential",
-        title: isEnglish ? "Essential digital protection required" : "Controles esenciales de protección digital",
-        explanation: isEnglish
-          ? "Security is below 25%. Prioritize MFA, passwords, backups, and incident response."
-          : "La seguridad está por debajo del 25 %. Prioriza MFA, contraseñas, copias de seguridad y respuesta ante incidentes.",
+        title,
+        explanation,
+        subtitles: securityBreaches,
         evidence: ["security"]
       });
     }
@@ -483,25 +524,6 @@ const DigitalVibesRecommendations = {
       quarter,
       actions: selectedActions.filter((action) => action.quarter === quarter)
     }));
-
-    // Si algún trimestre queda sin acciones específicas detectadas, asignar consolidación
-    const defaultQuarterFallbacks = isEnglish ? [
-      { id: "foundations-audit", title: { en: "Audit core foundations and digital assets" }, result: "Maintain digital assets aligned and operational" },
-      { id: "growth-review", title: { en: "Review acquisition and commercial conversion metrics" }, result: "Optimize campaign efficiency and contact flow" },
-      { id: "experience-tuning", title: { en: "Refine customer experience and retention touchpoints" }, result: "Elevate customer satisfaction and repeat loyalty" },
-      { id: "continuous-optimization", title: { en: "Strategic review and new tech experimentation" }, result: "Keep processes optimized and competitive" }
-    ] : [
-      { id: "foundations-audit", title: { es: "Auditoría de fundamentos y activos digitales" }, result: "Mantener los activos alineados y operativos" },
-      { id: "growth-review", title: { es: "Revisión de métricas comerciales y captación" }, result: "Optimizar eficiencia de canales y flujo comercial" },
-      { id: "experience-tuning", title: { es: "Afinar la experiencia del cliente y posventa" }, result: "Elevar satisfacción y fidelidad a largo plazo" },
-      { id: "continuous-optimization", title: { es: "Revisión estratégica y experimentación continua" }, result: "Mantener procesos optimizados y competitivos" }
-    ];
-
-    roadmap.forEach((stage, idx) => {
-      if (!stage.actions.length) {
-        stage.actions.push(defaultQuarterFallbacks[idx]);
-      }
-    });
 
     return {
       riskAlerts,
@@ -1057,22 +1079,22 @@ if (typeof globalThis !== "undefined") {
             "¿Con qué frecuencia utilizas datos fiables para tomar decisiones de negocio y marketing?"
           ],
           implications: [
-            ["La propuesta de valor está poco definida y puede generar comunicaciones sin foco.", "La idea existe, pero necesita concretarse y validarse.", "El público y el posicionamiento están definidos; el siguiente paso es optimizar la diferenciación."],
-            ["La infraestructura está desactualizada o desconectada y requiere reforzar sus bases.", "La infraestructura es parcial y conviene priorizar su integración.", "La base funciona; conviene optimizar rendimiento e integración."],
-            ["Las decisiones se toman sin datos suficientes, por lo que conviene implantar medición básica.", "Los datos son parciales o poco utilizados; mejora el seguimiento.", "La medición es sistemática; profundiza el análisis y la experimentación."]
+            ["La propuesta de valor digital o el público al que te diriges todavía no están suficientemente definidos; esto puede hacer que la comunicación resulte poco diferenciada.", "Existe una propuesta y un público identificados, pero falta concretarlos o comprobar que conectan con las necesidades reales.", "Tu negocio tiene una propuesta de valor y un público definidos; conviene revisar periódicamente que el mensaje siga siendo relevante y diferencial."],
+            ["La infraestructura digital presenta carencias o está poco integrada; conviene revisar los sistemas esenciales antes de ampliar herramientas.", "Hay herramientas, pero su integración, actualización o aprovechamiento es parcial.", "La infraestructura está organizada y acompaña la operativa; conviene mantenerla actualizada y revisar su integración."],
+            ["Las decisiones parecen depender de información limitada o poco fiable; faltan indicadores básicos para saber qué funciona.", "Se consultan algunos datos, pero no siempre son completos o se incorporan a las decisiones.", "El negocio utiliza datos de forma organizada y puede avanzar hacia análisis y experimentación."]
           ]
         },
         {
           name: "Amplify",
           questions: [
-            "¿Con qué constancia publicas contenido útil para las personas a las que quieres llegar?",
+            "¿Qué tan constante es la publicación de contenido útil para las personas a las que quieres llegar?",
             "¿Qué tan sistemáticamente atraes potenciales clientes mediante búsquedas, redes sociales o publicidad?",
             "¿Qué tan bien mides qué canales y campañas generan oportunidades de negocio valiosas?"
           ],
           implications: [
-            ["La presencia es irregular o inexistente: define contenidos y una cadencia.", "La actividad es irregular; ordena el calendario y los objetivos.", "El contenido es constante; optimiza formatos y resultados."],
-            ["La captación es improvisada o inexistente: selecciona canales priorizados.", "Los canales están activos sin un sistema estable de captación.", "La captación está organizada; optimiza inversión y calidad."],
-            ["No se sabe qué canales generan oportunidades; configura una medición básica.", "La medición es incompleta; conecta campañas y resultados.", "La medición es útil; mejora la eficiencia y la atribución."]
+            ["La actividad de contenidos es inexistente o demasiado irregular para construir visibilidad y confianza.", "Hay publicaciones, pero su frecuencia, planificación o conexión con el público es irregular.", "Existe una actividad organizada; la oportunidad está en optimizar formatos, distribución y contribución comercial."],
+            ["La captación digital es inexistente o depende de acciones aisladas; conviene identificar canales adecuados antes de ampliar esfuerzos.", "Se utilizan canales, pero falta continuidad o un proceso para convertir actividad en contactos cualificados.", "La captación está organizada; el siguiente paso es mejorar calidad y eficiencia."],
+            ["No se identifica con claridad qué canales generan oportunidades valiosas.", "Existe medición, pero no permite comparar de forma consistente canales y resultados.", "Se mide el rendimiento de los canales; puede profundizarse en calidad de oportunidades y retorno."]
           ]
         },
         {
@@ -1083,9 +1105,9 @@ if (typeof globalThis !== "undefined") {
             "¿Con qué frecuencia pruebas y mejoras tus páginas, formularios o procesos de venta?"
           ],
           implications: [
-            ["Hay mucha fricción o las vías no están claras; simplifica el recorrido.", "El proceso existe, pero puede mejorar reduciendo pasos.", "El recorrido está claro; optimiza la experiencia y la conversión."],
-            ["Los contactos no reciben seguimiento: define un proceso y responsables.", "El seguimiento es irregular; establece registros y tiempos.", "El proceso es consistente; automatiza y mejora la respuesta."],
-            ["Las páginas y ventas rara vez se revisan; detecta las fricciones principales.", "Las mejoras son puntuales; establece pruebas periódicas.", "La optimización es continua; prioriza experimentos medibles."]
+            ["El recorrido digital puede presentar barreras para contactar, solicitar información o contratar.", "El cliente puede contactar o contratar, pero hay pasos que podrían simplificarse.", "El recorrido es claro y accesible; conviene seguir observando la experiencia."],
+            ["Los contactos pueden quedar sin seguimiento o registro de avance.", "Hay seguimiento, pero depende de acciones manuales o irregulares.", "Existe un proceso organizado; puede mejorarse la trazabilidad sin perder trato personal."],
+            ["Las páginas, formularios o procesos apenas se revisan; pueden existir fricciones no detectadas.", "Se hacen mejoras puntuales, pero falta una rutina de comprobación.", "Se revisan y mejoran los procesos; pueden incorporarse pruebas sistemáticas."]
           ]
         },
         {
@@ -1096,9 +1118,9 @@ if (typeof globalThis !== "undefined") {
             "¿Qué tan bien impulsas nuevas compras, recomendaciones o relaciones a largo plazo?"
           ],
           implications: [
-            ["La relación termina después de la venta; diseña una experiencia de posventa.", "El contacto es ocasional; crea momentos definidos después de la compra.", "La relación es activa; optimiza la fidelización."],
-            ["No se recoge feedback; habilita canales simples de escucha.", "El feedback se recoge sin un análisis organizado.", "La escucha es activa; aplica los aprendizajes."],
-            ["No hay acciones claras de continuidad; identifica oportunidades de relación.", "Las acciones son aisladas; diseña un proceso de retención.", "La continuidad está estructurada; segmenta y mejora el valor."]
+            ["La relación parece detenerse después de la venta o proyecto.", "Existe contacto posterior, pero no responde a un proceso definido.", "Se mantiene relación después de la compra; puede mejorarse su personalización."],
+            ["No se recoge feedback de forma sistemática.", "Se reciben opiniones, pero no siempre se organizan o aprovechan.", "Se escuchan y aprovechan las opiniones; puede analizarse mejor sus patrones."],
+            ["No hay acciones claras para fomentar nuevas compras o recomendaciones.", "Existen acciones, pero son puntuales o poco estructuradas.", "Se trabaja la continuidad y recomendación; puede optimizarse la segmentación."]
           ]
         },
         {
@@ -1109,9 +1131,9 @@ if (typeof globalThis !== "undefined") {
             "¿Cómo verificas que la IA y la automatización ahorren tiempo sin afectar a la calidad ni a la confianza?"
           ],
           implications: [
-            ["No se identifican procesos repetitivos; comienza por mapear las tareas.", "Las oportunidades existen, pero no están priorizadas por impacto y viabilidad.", "Las oportunidades están priorizadas; optimiza la cartera."],
-            ["No se usa IA o se usa sin criterio; identifica casos seguros.", "El uso es puntual; define procesos y revisión humana.", "El uso está integrado y supervisado; mide productividad y calidad."],
-            ["No se verifica el impacto; establece controles básicos.", "La revisión es informal; define criterios de calidad y confianza.", "El impacto está controlado; optimiza y documenta."]
+            ["No se han identificado tareas repetitivas de forma estructurada; primero observar procesos, no comprar herramientas.", "Se reconocen tareas, pero falta priorizarlas por frecuencia, tiempo, errores e impacto.", "Se identifican y priorizan oportunidades; revisar que cada iniciativa tenga objetivo y beneficio comprobable."],
+            ["No se utiliza IA en procesos definidos o su uso es improvisado; no significa que deba incorporarse de inmediato.", "Se usa IA puntualmente, pero faltan procesos, límites y supervisión consistentes.", "Se utiliza IA en procesos definidos y supervisados; ampliar solo donde aporte valor."],
+            ["No hay mecanismo claro para comprobar calidad, precisión y confianza de IA/automatizaciones.", "Se revisan algunos resultados, pero los criterios de calidad y supervisión son incompletos.", "Se comprueba impacto y calidad; formalizar indicadores y revisiones."]
           ]
         },
         {
@@ -1122,9 +1144,9 @@ if (typeof globalThis !== "undefined") {
             "¿Qué tan preparadas están las personas que trabajan en tu negocio para reconocer amenazas digitales y saber cómo actuar ante un incidente?"
           ],
           implications: [
-            ["Los controles básicos son insuficientes; activa MFA y contraseñas seguras.", "La protección es parcial; amplía MFA y la gestión de accesos.", "Los controles están instalados; revisa cobertura y accesos privilegiados."],
-            ["Las copias o la recuperación no están verificadas; establécelas y pruébalas.", "Las medidas son parciales; formaliza frecuencia y pruebas de restauración.", "La recuperación está organizada; revisa la resiliencia."],
-            ["Falta preparación; ofrece formación básica y un protocolo de incidentes.", "La preparación es desigual; refuerza formación y vías de escalado.", "La preparación es sistemática; actualiza prácticas y simulacros."]
+            ["Las cuentas pueden estar expuestas por contraseñas débiles/reutilizadas o ausencia de MFA; priorizar contraseñas únicas, MFA y revisión de accesos.", "Hay medidas, pero no cubren todas las cuentas; revisar especialmente correo, web y servicios financieros.", "Las prácticas están implantadas; revisar cobertura y accesos antiguos."],
+            ["No hay garantías suficientes de recuperación; establecer copias adecuadas y comprobar restauración.", "Hay copias, pero frecuencia, cobertura o restauración no están verificadas.", "Hay medidas organizadas; probar restauraciones y revisar cobertura crítica."],
+            ["Las personas pueden no reconocer amenazas o no saber cómo actuar; hace falta formación y protocolo sencillo.", "Existe sensibilización, pero conocimientos o procedimientos varían.", "Hay prácticas de concienciación y respuesta; actualizarlas y comprobar que se conocen."]
           ]
         }
       ];
@@ -1253,8 +1275,10 @@ if (typeof globalThis !== "undefined") {
       const globalValue = assessment.querySelector("[data-assessment-global]");
       const dimensionList = assessment.querySelector("[data-assessment-dimension-scores]");
       const bandValue = assessment.querySelector("[data-assessment-band]");
+      const flowChart = assessment.querySelector("[data-assessment-chart-flow]");
+      const transversalChart = assessment.querySelector("[data-assessment-chart-transversal]");
       const chart = assessment.querySelector("[data-assessment-chart]");
-      if (!globalValue || !dimensionList || !chart || !bandValue || !currentCalculation) return;
+      if (!globalValue || !dimensionList || !bandValue || !currentCalculation) return;
 
       globalValue.textContent = `${Math.round(currentCalculation.global.percentage)}%`;
       const bandNames = isEnglish
@@ -1285,18 +1309,12 @@ if (typeof globalThis !== "undefined") {
           : `Nivel global: ${bandNames[bandKey]} (${Math.round(currentCalculation.global.percentage)}%). ${bandSummaries[bandKey]}`;
       }
 
-      const chartLabels = isEnglish
-        ? ["Discover", "Amplify", "Connect", "Evolve", "AI & automation", "Security"]
-        : ["Discover", "Amplify", "Connect", "Evolve", "IA y automatización", "Seguridad"];
-      chart.setAttribute("aria-label", `${bandNames[bandKey]}. ${currentCalculation.dimensions.map((dimension, index) =>
-        `${chartLabels[index]}: ${Math.round(dimension.percentage)}%`
-      ).join(", ")}`);
-      chart.replaceChildren(...currentCalculation.dimensions.map((dimension, index) => {
+      function createBarRow(dimension) {
         const row = document.createElement("div");
         row.className = "assessment-chart-row";
         const label = document.createElement("span");
         label.className = "assessment-chart-label";
-        label.textContent = chartLabels[index];
+        label.textContent = dimension.name;
         const track = document.createElement("div");
         track.className = "assessment-chart-track";
         const fill = document.createElement("span");
@@ -1307,7 +1325,21 @@ if (typeof globalThis !== "undefined") {
         value.textContent = `${Math.round(dimension.percentage)}%`;
         row.append(label, track, value);
         return row;
-      }));
+      }
+
+      const flowDimensions = currentCalculation.dimensions.filter((d) =>
+        ["foundations", "demand", "conversion", "loyalty"].includes(d.id)
+      );
+      const transversalDimensions = currentCalculation.dimensions.filter((d) =>
+        ["automation", "security"].includes(d.id)
+      );
+
+      if (flowChart && transversalChart) {
+        flowChart.replaceChildren(...flowDimensions.map(createBarRow));
+        transversalChart.replaceChildren(...transversalDimensions.map(createBarRow));
+      } else if (chart) {
+        chart.replaceChildren(...currentCalculation.dimensions.map(createBarRow));
+      }
 
       dimensionList.replaceChildren(...currentCalculation.dimensions.map((dimension) => {
         const row = document.createElement("div");
@@ -1328,7 +1360,7 @@ if (typeof globalThis !== "undefined") {
       const opportunityContainer = assessment.querySelector("[data-assessment-opportunities]");
       const roadmapContainer = assessment.querySelector("[data-assessment-roadmap]");
       const strengthContainer = assessment.querySelector("[data-assessment-strengths]");
-      if (!riskContainer || !opportunityContainer || !roadmapContainer || !strengthContainer) return;
+      if (!riskContainer || !opportunityContainer || !strengthContainer) return;
 
       const contextIndex = {
         C1: contextQuestions[0] ? answers[questions.findIndex((item) => item.id === "C1")] : null,
@@ -1362,62 +1394,84 @@ if (typeof globalThis !== "undefined") {
         }
       }
 
-      function synthesizeStrength(dimension, strongestItems) {
-        if (!strongestItems.length) return "";
-        const itemSummaries = strongestItems.map((item) => {
-          const baseText = getQuestionImplication(dimension, item.index, item.score);
-          if (isEnglish) {
-            return `have consolidated ${dimension.name.toLowerCase()} capabilities (${baseText.toLowerCase()})`;
-          }
-          return `cuentas con un desempeño destacado en este ámbito: ${baseText.charAt(0).toLowerCase() + baseText.slice(1)}`;
-        }).join(isEnglish ? " and " : ". Además, ");
+      function buildDimensionSynthesis(dim, scores) {
+        const pct = dim.percentage;
+        const [s0, s1, s2] = scores;
+        const texts = dim.implications || [];
 
-        if (isEnglish) {
-          return `Your business shows strong maturity here: you ${itemSummaries}. Use this solid foundation as a competitive advantage to accelerate other digital initiatives.`;
+        // Reglas de combinación específicas:
+        // Caso IA/automatización
+        if (dim.id === "automation") {
+          if (s0 <= 1 && s1 <= 1) {
+            return isEnglish
+              ? "The primary opportunity is identifying manual repetitive processes and clear use cases; we do not recommend complex tools yet."
+              : "La oportunidad principal es identificar procesos repetitivos y casos de uso claros; no se recomienda incorporar herramientas complejas aún.";
+          }
+          if (s0 >= 3 && s1 <= 1) {
+            return isEnglish
+              ? "Processes are identified, but AI is not currently utilized; consider conventional automation where it best solves the workload."
+              : "Los procesos están identificados, pero no se hace uso relevante de IA; conviene valorar automatización convencional si resuelve mejor el problema.";
+          }
+          if (s0 <= 1 && s1 >= 3) {
+            return isEnglish
+              ? "AI is actively used, but process prioritization is lacking; review whether current usage addresses genuine core needs."
+              : "Hay uso de IA, pero falta priorizar procesos; conviene revisar si ese uso resuelve necesidades reales del negocio.";
+          }
+          if (s1 >= 3 && s2 <= 1) {
+            return isEnglish
+              ? "AI is in use, but supervision, precision, and trust controls must be reinforced before scaling further."
+              : "Tu negocio ya utiliza IA, pero necesita reforzar la revisión, privacidad y control de calidad antes de ampliar su uso.";
+          }
+          if (pct < 40) {
+            return isEnglish
+              ? "Your business has headroom to leverage technology to save time and reduce manual tasks. The opportunity lies in detecting repetitive tasks and choosing proportionate tools."
+              : "Tu negocio todavía tiene margen para identificar dónde la tecnología puede ahorrar tiempo y reducir tareas manuales. La oportunidad no consiste en incorporar herramientas por tendencia, sino en detectar procesos repetitivos y elegir soluciones proporcionadas.";
+          }
         }
-        return `Tu negocio demuestra madurez y solvencia en esta área: ${itemSummaries}. Esta base sólida constituye una ventaja competitiva clave para apalancar el crecimiento en el resto de tu ecosistema digital.`;
+
+        // Caso General según intervalos oficiales (0-39%, 40-74%, 75-100%)
+        if (pct >= 75) {
+          const hasLow = scores.some((sc) => sc <= 1);
+          if (hasLow) {
+            const lowIdx = scores.findIndex((sc) => sc <= 1);
+            const lowImplication = texts[lowIdx]?.[0] || "";
+            return isEnglish
+              ? `${dim.name} is a consolidated area overall, though a specific gap remains: ${lowImplication.toLowerCase()}`
+              : `La relación y escucha de clientes están bien desarrolladas en ${dim.name}, pero existe una brecha concreta que atender: ${lowImplication.charAt(0).toLowerCase() + lowImplication.slice(1)}`;
+          }
+          return isEnglish
+            ? `${dim.name} represents a consolidated capability with consistent, organized practices. Focus on sustaining performance and continuous differentiation.`
+            : `${dim.name} representa un área consolidada con procesos organizados y medibles. Conviene mantener la revisión periódica para asegurar diferenciación continua.`;
+        } else if (pct >= 40) {
+          return isEnglish
+            ? `${dim.name} is currently your best developed dimension or in active progress. Functional practices exist, though connecting the remaining irregular areas will solidify the system.`
+            : `${dim.name} es actualmente tu dimensión mejor desarrollada o en desarrollo activo. Hay prácticas existentes que funcionan, aunque todavía existen oportunidades para consolidarlas y hacerlas sistemáticas.`;
+        } else {
+          const breaches = scores
+            .map((sc, idx) => ({ sc, text: texts[idx]?.[0] }))
+            .filter((item) => item.sc <= 1 && item.text)
+            .map((item) => item.text);
+          return isEnglish
+            ? `Priority improvement area in ${dim.name}: ${breaches.join(" ")}`
+            : `Área prioritaria de mejora en ${dim.name}: ${breaches.join(" ")}`;
+        }
       }
 
-      function synthesizeOpportunity(item) {
-        const baseImplication = getQuestionImplication(item.dimension, item.index, item.score);
-        const isCritical = item.score <= 1;
-
-        if (isEnglish) {
-          const urgency = isCritical ? "Critical priority:" : "Opportunity for improvement:";
-          let tailoredAdvice = isCritical
-            ? `Addressing this gap will unblock foundational performance. ${baseImplication}`
-            : `Refining this process will increase consistency and efficiency. ${baseImplication}`;
-          if (isSmallBiz) {
-            tailoredAdvice += " We recommend lean tools and direct ownership to maintain agility.";
-          } else if (isMidOrLargeBiz) {
-            tailoredAdvice += " We recommend establishing standard SOPs and cross-team alignment.";
-          }
-          return `${urgency} ${tailoredAdvice}`;
-        }
-
-        const urgency = isCritical ? "Atención prioritaria:" : "Oportunidad de mejora:";
-        let tailoredAdvice = isCritical
-          ? `Resolver esta brecha evitará fugas de oportunidades en tus canales. ${baseImplication}`
-          : `Regularizar y sistematizar este proceso aumentará la consistencia del negocio. ${baseImplication}`;
-
-        if (isSmallBiz) {
-          tailoredAdvice += " Para equipos ágiles, la clave es adoptar herramientas directas y procesos ligeros sin sobrecargar la operativa.";
-        } else if (isMidOrLargeBiz) {
-          tailoredAdvice += " Para organizaciones de tu escala, es fundamental estandarizar protocolos claros y responsabilidades entre áreas.";
-        }
-
-        return `${urgency} ${tailoredAdvice}`;
-      }
-
-      const strongDimensions = [...currentCalculation.dimensions]
-        .sort((a, b) => b.percentage - a.percentage)
-        .filter((dimension) => {
-          const scores = currentCalculation.answersByDimension?.[dimension.id] ?? [];
-          return scores.some((score) => score >= 3);
+      // 1. FORTALEZAS: Hasta dos. Criterio oficial:
+      // - Dimensión >= 75% si ninguna pregunta es 0-1 (o si tiene 0-1, se muestra como fortaleza con brecha concreta).
+      // - Si ninguna llega al 75%, una dimensión entre 40-74% puede ser "área mejor desarrollada", no "fortaleza consolidada".
+      const candidateStrengths = [...currentCalculation.dimensions]
+        .map((dim) => {
+          const scores = currentCalculation.answersByDimension?.[dim.id] ?? [0, 0, 0];
+          return { dim, scores, percentage: dim.percentage };
         })
+        .sort((a, b) => b.percentage - a.percentage);
+
+      const topStrengths = candidateStrengths
+        .filter((c) => c.percentage >= 40)
         .slice(0, 2);
 
-      strengthContainer.replaceChildren(...(strongDimensions.length ? strongDimensions.map((strength) => {
+      strengthContainer.replaceChildren(...(topStrengths.length ? topStrengths.map((item) => {
         const article = document.createElement("article");
         article.className = "assessment-rule-card";
         const icon = document.createElement("span");
@@ -1426,20 +1480,15 @@ if (typeof globalThis !== "undefined") {
         icon.textContent = "↗";
         const header = document.createElement("div");
         header.className = "assessment-rule-header";
+        const isConsolidated = item.percentage >= 75;
+        const tag = isConsolidated
+          ? (isEnglish ? "Consolidated strength" : "Fortaleza consolidada")
+          : (isEnglish ? "Best developed area" : "Área mejor desarrollada");
         const title = document.createElement("strong");
-        title.textContent = `${strength.name} · ${Math.round(strength.percentage)}%`;
+        title.textContent = `${item.dim.name} · ${Math.round(item.percentage)}% (${tag})`;
         header.append(icon, title);
         const text = document.createElement("p");
-        const dimensionIndex = dimensions.findIndex((dimension) => dimension.id === strength.id);
-        const dimension = dimensions[dimensionIndex];
-        const strongestItems = (currentCalculation.answersByDimension?.[strength.id] ?? [])
-          .map((score, index) => ({ score, index }))
-          .filter((item) => item.score >= 3)
-          .sort((a, b) => b.score - a.score)
-          .slice(0, 2);
-
-        const synthesizedText = synthesizeStrength(dimension, strongestItems);
-        text.textContent = `${synthesizedText}${contextNarrative}`;
+        text.textContent = buildDimensionSynthesis(item.dim, item.scores) + contextNarrative;
         article.append(header, text);
         return article;
       }) : [(() => {
@@ -1447,12 +1496,13 @@ if (typeof globalThis !== "undefined") {
         article.className = "assessment-rule-card";
         const text = document.createElement("p");
         text.textContent = isEnglish
-          ? "No dimension currently reaches an advanced level. Establishing the priority fundamentals in Discover, Connect, and Security will quickly generate your first strong pillars."
-          : `Actualmente ninguna dimensión alcanza un nivel avanzado consolidado. Enfocar los esfuerzos iniciales en Discover, Connect y Seguridad sentará de inmediato tus primeras fortalezas estratégicas.${contextNarrative}`;
+          ? "No dimension currently reaches 40%. Focus initially on establishing the core fundamentals across VIBE FLOW and Security."
+          : `Actualmente ninguna dimensión alcanza el 40 %. Enfocar los esfuerzos iniciales en asentar las bases esenciales del recorrido VIBE FLOW y la seguridad permitirá generar rápidamente tus primeras fortalezas.${contextNarrative}`;
         article.append(text);
         return article;
       })()]));
 
+      // 2. ALERTAS ESENCIALES (Pág. 5 del brief: agrupadas en una sola tarjeta con subtítulos si hay varias)
       riskContainer.replaceChildren(...(interpretation.riskAlerts.length
         ? interpretation.riskAlerts.map((alert) => {
             const article = document.createElement("article");
@@ -1476,27 +1526,37 @@ if (typeof globalThis !== "undefined") {
             article.className = "assessment-rule-card";
             const text = document.createElement("p");
             text.textContent = isEnglish
-              ? "No critical digital risks detected. Core security and baseline protections are currently operating above critical thresholds."
-              : "No se identificaron alertas críticas de seguridad inmediata. Las medidas esenciales de protección operan por encima de los umbrales de riesgo.";
+              ? "No essential security risks detected. Account protection and backups are operating above critical thresholds."
+              : "No se identificaron alertas críticas de ciberseguridad. Las medidas de protección esencial operan por encima de los umbrales de riesgo.";
             article.append(text);
             return article;
           })()]
       ));
 
-      // Priorizar bloqueos críticos en Discover, Connect o Seguridad primero
-      const weakItems = dimensions.flatMap((dimension) =>
-        (currentCalculation.answersByDimension?.[dimension.id] ?? [])
-          .map((score, index) => {
-            const isCriticalCore = (score <= 1) && (dimension.id === "foundations" || dimension.id === "conversion" || dimension.id === "security");
-            return { dimension, score, index, isCriticalCore };
-          })
-          .filter((item) => item.score <= 2)
-      ).sort((a, b) => {
-        if (a.isCriticalCore !== b.isCriticalCore) return a.isCriticalCore ? -1 : 1;
-        return (a.score - b.score) || (a.index - b.index);
-      }).slice(0, 3);
+      // 3. OPORTUNIDADES DE CRECIMIENTO: Hasta tres, agrupadas por dimensión
+      // Priorizar preguntas 0-1 y dimensiones < 40%. Agrupar varias brechas de una misma dimensión en una sola tarjeta.
+      const lowDimensions = [...currentCalculation.dimensions]
+        .map((dim) => {
+          const scores = currentCalculation.answersByDimension?.[dim.id] ?? [0, 0, 0];
+          const lowScores = scores
+            .map((score, index) => ({ score, index }))
+            .filter((item) => item.score <= 1);
+          const irregularScores = scores
+            .map((score, index) => ({ score, index }))
+            .filter((item) => item.score === 2);
+          return { dim, scores, lowScores, irregularScores, percentage: dim.percentage };
+        })
+        .filter((item) => item.percentage < 75 || item.lowScores.length > 0)
+        .sort((a, b) => {
+          // Severidad: primero dimensiones con preguntas críticas (0-1), luego menor porcentaje
+          const aCrit = a.lowScores.length;
+          const bCrit = b.lowScores.length;
+          if (aCrit !== bCrit) return bCrit - aCrit;
+          return a.percentage - b.percentage;
+        })
+        .slice(0, 3);
 
-      opportunityContainer.replaceChildren(...(weakItems.length ? weakItems.map((item) => {
+      opportunityContainer.replaceChildren(...(lowDimensions.length ? lowDimensions.map((item) => {
         const article = document.createElement("article");
         article.className = "assessment-rule-card";
         const icon = document.createElement("span");
@@ -1506,10 +1566,16 @@ if (typeof globalThis !== "undefined") {
         const header = document.createElement("div");
         header.className = "assessment-rule-header";
         const title = document.createElement("strong");
-        title.textContent = `${item.dimension.name} · ${item.score}/4`;
+        title.textContent = `${item.dim.name} · ${Math.round(item.percentage)}%`;
         header.append(icon, title);
         const text = document.createElement("p");
-        text.textContent = synthesizeOpportunity(item);
+
+        const synthesis = buildDimensionSynthesis(item.dim, item.scores);
+        text.textContent = synthesis + (isSmallBiz
+          ? (isEnglish ? " Recommended approach: prioritize lean direct tools." : " Enfoque recomendado: priorizar herramientas ligeras y directas sin complejidad innecesaria.")
+          : isMidOrLargeBiz
+          ? (isEnglish ? " Recommended approach: standardize cross-team ownership and SOPs." : " Enfoque recomendado: estandarizar protocolos y responsabilidades compartidas.")
+          : "");
         article.append(header, text);
         return article;
       }) : [(() => {
@@ -1517,8 +1583,8 @@ if (typeof globalThis !== "undefined") {
         article.className = "assessment-rule-card";
         const text = document.createElement("p");
         text.textContent = isEnglish
-          ? "No critical or intermediate gaps were identified across evaluated items. Focus on continuous experimentation and sustaining your current leadership."
-          : `No se identificaron brechas críticas o intermedias en los ítems evaluados. El foco recomendado es mantener la disciplina de medición y explorar experimentación avanzada.${contextNarrative}`;
+          ? "No critical gaps were identified across evaluated dimensions. Focus on continuous experimentation and sustaining your leadership."
+          : `No se identificaron brechas críticas en las dimensiones evaluadas. El foco recomendado es mantener la disciplina de medición y explorar optimización continua.${contextNarrative}`;
         article.append(text);
         return article;
       })()]));
@@ -1563,34 +1629,36 @@ if (typeof globalThis !== "undefined") {
         "automation-quality": "Añadir controles de calidad y confianza"
       };
 
-      roadmapContainer.replaceChildren(...interpretation.roadmap.map((stage) => {
-        const article = document.createElement("article");
-        article.className = "assessment-roadmap-stage";
-        const title = document.createElement("h4");
-        const stageNames = isEnglish
-          ? ["Months 1–3 · Fundamentals", "Months 4–6 · Activation", "Months 7–9 · Optimization", "Months 10–12 · Consolidation"]
-          : ["Meses 1–3 · Fundamentos", "Meses 4–6 · Activación", "Meses 7–9 · Optimización", "Meses 10–12 · Consolidación"];
-        title.textContent = stageNames[stage.quarter - 1] ?? (isEnglish ? `Quarter ${stage.quarter}` : `Trimestre ${stage.quarter}`);
-        const list = document.createElement("ul");
-        const visibleActions = stage.actions.length
-          ? stage.actions
-          : [{ id: "review", result: isEnglish ? "Review KPIs and maintain the established plan." : "Revisar KPI y mantener el plan establecido." }];
-        list.append(...visibleActions.map((action) => {
-          const item = document.createElement("li");
-          const actionTitle = action.title
-            ? (isEnglish ? action.title.en : action.title.es)
-            : (actionTitles[action.id] ?? action.result);
-          item.textContent = actionTitle;
-          if (action.evidence?.length) {
-            item.title = action.evidence.map((evidence) =>
-              `${evidence.questionId}: ${evidence.answer}`
-            ).join("; ");
-          }
-          return item;
+      if (roadmapContainer) {
+        roadmapContainer.replaceChildren(...interpretation.roadmap.map((stage) => {
+          const article = document.createElement("article");
+          article.className = "assessment-roadmap-stage";
+          const title = document.createElement("h4");
+          const stageNames = isEnglish
+            ? ["Months 1–3 · Fundamentals", "Months 4–6 · Activation", "Months 7–9 · Optimization", "Months 10–12 · Consolidation"]
+            : ["Meses 1–3 · Fundamentos", "Meses 4–6 · Activación", "Meses 7–9 · Optimización", "Meses 10–12 · Consolidación"];
+          title.textContent = stageNames[stage.quarter - 1] ?? (isEnglish ? `Quarter ${stage.quarter}` : `Trimestre ${stage.quarter}`);
+          const list = document.createElement("ul");
+          const visibleActions = stage.actions.length
+            ? stage.actions
+            : [{ id: "review", result: isEnglish ? "Review KPIs and maintain the established plan." : "Revisar KPI y mantener el plan establecido." }];
+          list.append(...visibleActions.map((action) => {
+            const item = document.createElement("li");
+            const actionTitle = action.title
+              ? (isEnglish ? action.title.en : action.title.es)
+              : (actionTitles[action.id] ?? action.result);
+            item.textContent = actionTitle;
+            if (action.evidence?.length) {
+              item.title = action.evidence.map((evidence) =>
+                `${evidence.questionId}: ${evidence.answer}`
+              ).join("; ");
+            }
+            return item;
+          }));
+          article.append(title, list);
+          return article;
         }));
-        article.append(title, list);
-        return article;
-      }));
+      }
     }
 
     function showView(name) {
@@ -1739,7 +1807,8 @@ if (typeof globalThis !== "undefined") {
       assessment.querySelector("[data-assessment-strengths]").replaceChildren();
       assessment.querySelector("[data-assessment-risk-alerts]").replaceChildren();
       assessment.querySelector("[data-assessment-opportunities]").replaceChildren();
-      assessment.querySelector("[data-assessment-roadmap]").replaceChildren();
+      const rm = assessment.querySelector("[data-assessment-roadmap]");
+      if (rm) rm.replaceChildren();
       assessment.querySelector("[data-assessment-map-form]")?.reset();
       assessment.querySelector("[data-assessment-form-status]").textContent = "";
       showView("intro");
