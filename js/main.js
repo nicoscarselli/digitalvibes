@@ -44,24 +44,413 @@ const DigitalVibesCalculations = {
 
 const DigitalVibesRecommendations = {
   library: [
-    { id: "security-mfa", dimension: "security", questionIds: ["S1"], activate: (answers) => (answers.S1 ?? 4) <= 1, priority: "risk", prerequisite: null, effort: "low", quarter: 1, result: "Critical account protection", kpi: "Percentage of critical accounts with MFA" },
-    { id: "security-backup", dimension: "security", questionIds: ["S2"], activate: (answers) => (answers.S2 ?? 4) <= 1, priority: "risk", prerequisite: null, effort: "low", quarter: 1, result: "Verified and recoverable information", kpi: "Restore tests completed" },
-    { id: "security-training", dimension: "security", questionIds: ["S3"], activate: (answers) => (answers.S3 ?? 4) <= 1, priority: "risk", prerequisite: null, effort: "medium", quarter: 1, result: "Team able to detect and report threats", kpi: "Team trained and incidents reported" },
-    { id: "discover-positioning", dimension: "foundations", questionIds: ["D1"], activate: (answers) => (answers.D1 ?? 4) <= 1, priority: "fundamental", prerequisite: null, effort: "medium", quarter: 1, result: "Clear and focused value proposition", kpi: "Approved positioning and audience statement" },
-    { id: "discover-infrastructure", dimension: "foundations", questionIds: ["D2"], activate: (answers) => (answers.D2 ?? 4) <= 1, priority: "fundamental", prerequisite: null, effort: "medium", quarter: 1, result: "Integrated core digital infrastructure", kpi: "Essential tools connected" },
-    { id: "discover-measurement", dimension: "foundations", questionIds: ["D3"], activate: (answers) => (answers.D3 ?? 4) <= 1, priority: "fundamental", prerequisite: null, effort: "medium", quarter: 1, result: "Basic and reliable measurement", kpi: "Decision KPIs reviewed monthly" },
-    { id: "amplify-content", dimension: "demand", questionIds: ["A1"], activate: (answers) => (answers.A1 ?? 4) <= 2, priority: "growth", prerequisite: "discover-positioning", effort: "medium", quarter: 2, result: "Repeatable content cadence", kpi: "Useful content pieces per month" },
-    { id: "amplify-acquisition", dimension: "demand", questionIds: ["A2"], activate: (answers) => (answers.A2 ?? 4) <= 2, priority: "growth", prerequisite: "discover-positioning", effort: "medium", quarter: 2, result: "A systematic, measurable acquisition channel", kpi: "Qualified prospects by channel" },
-    { id: "amplify-attribution", dimension: "demand", questionIds: ["A3"], activate: (answers) => (answers.A3 ?? 4) <= 2, priority: "growth", prerequisite: "discover-measurement", effort: "medium", quarter: 2, result: "Clear channel and campaign attribution", kpi: "Cost and leads by source" },
-    { id: "connect-journey", dimension: "conversion", questionIds: ["C3"], activate: (answers) => (answers.C3 ?? 4) <= 2, priority: "growth", prerequisite: "discover-infrastructure", effort: "medium", quarter: 1, result: "Friction-free digital conversion journey", kpi: "Conversion rate" },
-    { id: "connect-follow-up", dimension: "conversion", questionIds: ["C4"], activate: (answers) => (answers.C4 ?? 4) <= 1, priority: "fundamental", prerequisite: "discover-measurement", effort: "low", quarter: 1, result: "Consistent commercial follow-up", kpi: "Leads contacted within agreed time" },
-    { id: "connect-optimization", dimension: "conversion", questionIds: ["C5"], activate: (answers) => (answers.C5 ?? 4) <= 2, priority: "growth", prerequisite: "discover-measurement", effort: "medium", quarter: 3, result: "Continuous and measurable conversion testing", kpi: "Tests completed and impact" },
-    { id: "evolve-retention", dimension: "loyalty", questionIds: ["E1"], activate: (answers) => (answers.E1 ?? 4) <= 2, priority: "growth", prerequisite: "connect-follow-up", effort: "medium", quarter: 3, result: "Structured post-purchase relationship", kpi: "Repeat purchase or renewal rate" },
-    { id: "evolve-feedback", dimension: "loyalty", questionIds: ["E2"], activate: (answers) => (answers.E2 ?? 4) <= 2, priority: "growth", prerequisite: null, effort: "low", quarter: 2, result: "Systematic customer feedback loop", kpi: "Feedback response and actions closed" },
-    { id: "evolve-referrals", dimension: "loyalty", questionIds: ["E3"], activate: (answers) => (answers.E3 ?? 4) <= 2, priority: "growth", prerequisite: "evolve-feedback", effort: "medium", quarter: 3, result: "Repeat purchase and referral system", kpi: "Retention and referrals" },
-    { id: "automation-processes", dimension: "automation", questionIds: ["I1"], activate: (answers) => (answers.I1 ?? 4) <= 1, priority: "growth", prerequisite: "discover-measurement", effort: "medium", quarter: 2, result: "Prioritized automation opportunity map", kpi: "Hours identified and action approved" },
-    { id: "automation-ai", dimension: "automation", questionIds: ["I2"], activate: (answers) => (answers.I2 ?? 4) <= 2, priority: "growth", prerequisite: "automation-processes", effort: "medium", quarter: 3, result: "Controlled and supervised AI usage", kpi: "Active approved workflows" },
-    { id: "automation-quality", dimension: "automation", questionIds: ["I3"], activate: (answers) => (answers.I3 ?? 4) <= 2, priority: "growth", prerequisite: "automation-ai", effort: "medium", quarter: 3, result: "Quality and trust safeguards for automation", kpi: "Review completion and time saved" }
+    // MESES 1–3: Fundamentos y mitigación de riesgos críticos
+    {
+      id: "security-mfa",
+      dimension: "security",
+      questionIds: ["S1"],
+      activate: (answers) => (answers.S1 ?? 4) <= 1,
+      priority: "risk",
+      prerequisite: null,
+      effort: "low",
+      quarter: 1,
+      title: {
+        es: "Activar MFA y gestión de contraseñas seguras",
+        en: "Activate MFA and secure password management"
+      },
+      result: "Protección inmediata de cuentas y accesos críticos",
+      kpi: "100% cuentas críticas con MFA"
+    },
+    {
+      id: "security-backup",
+      dimension: "security",
+      questionIds: ["S2"],
+      activate: (answers) => (answers.S2 ?? 4) <= 1,
+      priority: "risk",
+      prerequisite: null,
+      effort: "low",
+      quarter: 1,
+      title: {
+        es: "Establecer y probar copias de seguridad",
+        en: "Establish and test data backups"
+      },
+      result: "Información crítica respaldada y con prueba de recuperación",
+      kpi: "Prueba de restauración verificada"
+    },
+    {
+      id: "security-training",
+      dimension: "security",
+      questionIds: ["S3"],
+      activate: (answers) => (answers.S3 ?? 4) <= 1,
+      priority: "risk",
+      prerequisite: null,
+      effort: "medium",
+      quarter: 1,
+      title: {
+        es: "Protocolo básico de respuesta y concienciación en ciberseguridad",
+        en: "Basic incident protocol and cybersecurity awareness"
+      },
+      result: "Equipo capacitado para identificar amenazas y saber cómo actuar",
+      kpi: "Guía de incidentes comunicada al equipo"
+    },
+    {
+      id: "discover-positioning",
+      dimension: "foundations",
+      questionIds: ["D1"],
+      activate: (answers) => (answers.D1 ?? 4) <= 1,
+      priority: "fundamental",
+      prerequisite: null,
+      effort: "medium",
+      quarter: 1,
+      title: {
+        es: "Definir con claridad la propuesta de valor digital",
+        en: "Clearly define your digital value proposition"
+      },
+      result: "Propuesta de valor y público objetivo nítidos y comunicables",
+      kpi: "Posicionamiento y cliente ideal aprobados"
+    },
+    {
+      id: "discover-infrastructure",
+      dimension: "foundations",
+      questionIds: ["D2"],
+      activate: (answers) => (answers.D2 ?? 4) <= 1,
+      priority: "fundamental",
+      prerequisite: null,
+      effort: "medium",
+      quarter: 1,
+      title: {
+        es: "Actualizar e integrar la infraestructura digital básica",
+        en: "Update and integrate core digital infrastructure"
+      },
+      result: "Web, analítica y canales operativos y conectados",
+      kpi: "Herramientas esenciales enlazadas sin fricción"
+    },
+    {
+      id: "discover-measurement",
+      dimension: "foundations",
+      questionIds: ["D3"],
+      activate: (answers) => (answers.D3 ?? 4) <= 1,
+      priority: "fundamental",
+      prerequisite: null,
+      effort: "medium",
+      quarter: 1,
+      title: {
+        es: "Implantar medición básica para decisiones de negocio",
+        en: "Implement basic measurement for business decisions"
+      },
+      result: "Cuadro de mando esencial con métricas fiables",
+      kpi: "Revisión mensual de indicadores clave"
+    },
+    {
+      id: "connect-journey-critical",
+      dimension: "conversion",
+      questionIds: ["C3"],
+      activate: (answers) => (answers.C3 ?? 4) <= 1,
+      priority: "fundamental",
+      prerequisite: "discover-infrastructure",
+      effort: "medium",
+      quarter: 1,
+      title: {
+        es: "Eliminar puntos de fricción en contacto y contratación",
+        en: "Remove friction points in contact and checkout"
+      },
+      result: "Canales de contacto y compra accesibles y directos",
+      kpi: "Tasa de conversión inicial y formularios operativos"
+    },
+    {
+      id: "connect-follow-up-critical",
+      dimension: "conversion",
+      questionIds: ["C4"],
+      activate: (answers) => (answers.C4 ?? 4) <= 1,
+      priority: "fundamental",
+      prerequisite: null,
+      effort: "low",
+      quarter: 1,
+      title: {
+        es: "Estructurar el seguimiento y registro de contactos",
+        en: "Structure lead follow-up and tracking"
+      },
+      result: "Asignación rápida y registro sistemático de cada oportunidad",
+      kpi: "Tiempo de respuesta inicial a nuevos prospectos"
+    },
+
+    // MESES 4–6: Activación sistemática (adquisición, contenidos y procesos)
+    {
+      id: "amplify-acquisition",
+      dimension: "demand",
+      questionIds: ["A2"],
+      activate: (answers) => (answers.A2 ?? 4) <= 2,
+      priority: "growth",
+      prerequisite: "discover-positioning",
+      effort: "medium",
+      quarter: 2,
+      title: {
+        es: "Estructurar un sistema de captación en canales clave",
+        en: "Build a structured acquisition system on key channels"
+      },
+      result: "Flujo organizado de oportunidades por búsquedas, redes o pauta",
+      kpi: "Prospectos calificados generados por canal"
+    },
+    {
+      id: "amplify-content",
+      dimension: "demand",
+      questionIds: ["A1"],
+      activate: (answers) => (answers.A1 ?? 4) <= 2,
+      priority: "growth",
+      prerequisite: "discover-positioning",
+      effort: "medium",
+      quarter: 2,
+      title: {
+        es: "Organizar un calendario de contenidos útil y regular",
+        en: "Organize a regular and useful content calendar"
+      },
+      result: "Presencia constante orientada a educar y resolver dudas",
+      kpi: "Publicaciones programadas y engagement de audiencia"
+    },
+    {
+      id: "amplify-attribution",
+      dimension: "demand",
+      questionIds: ["A3"],
+      activate: (answers) => (answers.A3 ?? 4) <= 2,
+      priority: "growth",
+      prerequisite: "discover-measurement",
+      effort: "medium",
+      quarter: 2,
+      title: {
+        es: "Conectar campañas con oportunidades de venta reales",
+        en: "Connect campaigns with real sales opportunities"
+      },
+      result: "Claridad sobre qué canales y piezas aportan valor comercial",
+      kpi: "Coste por oportunidad y retorno por canal"
+    },
+    {
+      id: "connect-journey-regular",
+      dimension: "conversion",
+      questionIds: ["C3"],
+      activate: (answers) => (answers.C3 ?? 4) === 2,
+      priority: "growth",
+      prerequisite: null,
+      effort: "medium",
+      quarter: 2,
+      title: {
+        es: "Simplificar pasos en el proceso comercial digital",
+        en: "Simplify steps in the digital commercial flow"
+      },
+      result: "Menos pasos intermedios para solicitar información o contratar",
+      kpi: "Reducción de abandonos en formularios o checkout"
+    },
+    {
+      id: "connect-follow-up-regular",
+      dimension: "conversion",
+      questionIds: ["C4"],
+      activate: (answers) => (answers.C4 ?? 4) === 2,
+      priority: "growth",
+      prerequisite: null,
+      effort: "low",
+      quarter: 2,
+      title: {
+        es: "Estandarizar tiempos y etapas del pipeline comercial",
+        en: "Standardize pipeline stages and follow-up response times"
+      },
+      result: "Seguimiento ágil con avisos y control de avance en CRM",
+      kpi: "Tasa de contacto efectivo sobre prospectos recibidos"
+    },
+    {
+      id: "automation-processes",
+      dimension: "automation",
+      questionIds: ["I1"],
+      activate: (answers) => (answers.I1 ?? 4) <= 1,
+      priority: "growth",
+      prerequisite: "discover-measurement",
+      effort: "medium",
+      quarter: 2,
+      title: {
+        es: "Mapear y priorizar tareas repetitivas automatizables",
+        en: "Map and prioritize repetitive automatable tasks"
+      },
+      result: "Matriz de procesos candidatos evaluados por impacto y viabilidad",
+      kpi: "Procesos clave seleccionados para automatización"
+    },
+    {
+      id: "evolve-feedback-init",
+      dimension: "loyalty",
+      questionIds: ["E2"],
+      activate: (answers) => (answers.E2 ?? 4) <= 1,
+      priority: "growth",
+      prerequisite: null,
+      effort: "low",
+      quarter: 2,
+      title: {
+        es: "Habilitar canales para recoger feedback y testimonios",
+        en: "Set up channels to gather feedback and testimonials"
+      },
+      result: "Encuestas breves y reseñas activadas sistemáticamente",
+      kpi: "Respuestas y testimonios obtenidos al mes"
+    },
+
+    // MESES 7–9: Optimización, experimentación y posventa
+    {
+      id: "connect-optimization",
+      dimension: "conversion",
+      questionIds: ["C5"],
+      activate: (answers) => (answers.C5 ?? 4) <= 2,
+      priority: "growth",
+      prerequisite: "discover-measurement",
+      effort: "medium",
+      quarter: 3,
+      title: {
+        es: "Establecer pruebas y mejoras periódicas en conversión",
+        en: "Establish periodic tests and improvements in conversion"
+      },
+      result: "Ajustes progresivos de textos, diseño y llamadas a la acción",
+      kpi: "Experimentos mensuales y tasa de mejora"
+    },
+    {
+      id: "evolve-retention",
+      dimension: "loyalty",
+      questionIds: ["E1"],
+      activate: (answers) => (answers.E1 ?? 4) <= 2,
+      priority: "growth",
+      prerequisite: null,
+      effort: "medium",
+      quarter: 3,
+      title: {
+        es: "Diseñar un recorrido estructurado de relación posventa",
+        en: "Design a structured post-sale relationship journey"
+      },
+      result: "Momentos definidos de contacto tras la entrega o servicio",
+      kpi: "Tasa de recompra o renovación de contratos"
+    },
+    {
+      id: "evolve-feedback-analysis",
+      dimension: "loyalty",
+      questionIds: ["E2"],
+      activate: (answers) => (answers.E2 ?? 4) === 2,
+      priority: "growth",
+      prerequisite: null,
+      effort: "low",
+      quarter: 3,
+      title: {
+        es: "Organizar el análisis periódico de opiniones de clientes",
+        en: "Organize regular analysis of customer feedback"
+      },
+      result: "Respuestas directas y mejoras de servicio basadas en datos",
+      kpi: "Índice de satisfacción e incidencias resueltas"
+    },
+    {
+      id: "evolve-referrals",
+      dimension: "loyalty",
+      questionIds: ["E3"],
+      activate: (answers) => (answers.E3 ?? 4) <= 2,
+      priority: "growth",
+      prerequisite: null,
+      effort: "medium",
+      quarter: 3,
+      title: {
+        es: "Diseñar un programa estructurado de recomendaciones y reactivación",
+        en: "Design a referral and reactivation program"
+      },
+      result: "Incentivos y campañas para multiplicar el valor de clientes actuales",
+      kpi: "Ventas o reuniones originadas por recomendación"
+    },
+    {
+      id: "automation-ai-pilot",
+      dimension: "automation",
+      questionIds: ["I2"],
+      activate: (answers) => (answers.I2 ?? 4) <= 2,
+      priority: "growth",
+      prerequisite: "automation-processes",
+      effort: "medium",
+      quarter: 3,
+      title: {
+        es: "Implementar herramientas de IA en casos seguros y supervisados",
+        en: "Implement AI tools in secure and supervised cases"
+      },
+      result: "Flujos de IA aplicados a redacción, síntesis o soporte asistido",
+      kpi: "Horas de equipo ahorradas bajo revisión humana"
+    },
+    {
+      id: "security-mid-mfa",
+      dimension: "security",
+      questionIds: ["S1"],
+      activate: (answers) => (answers.S1 ?? 4) === 2,
+      priority: "optimization",
+      prerequisite: null,
+      effort: "low",
+      quarter: 3,
+      title: {
+        es: "Extender MFA y control granular a todos los colaboradores",
+        en: "Extend MFA and granular access to all team members"
+      },
+      result: "Cobertura completa de accesos corporativos y privilegios",
+      kpi: "Auditoría de accesos al 100%"
+    },
+    {
+      id: "security-mid-backup",
+      dimension: "security",
+      questionIds: ["S2"],
+      activate: (answers) => (answers.S2 ?? 4) === 2,
+      priority: "optimization",
+      prerequisite: null,
+      effort: "low",
+      quarter: 3,
+      title: {
+        es: "Formalizar calendario y protocolos de restauración de backups",
+        en: "Formalize backup schedule and restoration protocols"
+      },
+      result: "Rutina programada de copias con simulación periódica",
+      kpi: "Frecuencia de backups y tiempo estimado de recuperación"
+    },
+
+    // MESES 10–12: Consolidación, escalado y auditoría continua
+    {
+      id: "automation-quality",
+      dimension: "automation",
+      questionIds: ["I3"],
+      activate: (answers) => (answers.I3 ?? 4) <= 2,
+      priority: "optimization",
+      prerequisite: "automation-ai-pilot",
+      effort: "medium",
+      quarter: 4,
+      title: {
+        es: "Establecer controles de calidad y confianza para automatización e IA",
+        en: "Establish quality and trust controls for automation and AI"
+      },
+      result: "Criterios claros de verificación humana y salvaguardas éticas",
+      kpi: "Auditoría de fiabilidad y consistencia de salidas"
+    },
+    {
+      id: "security-team-training",
+      dimension: "security",
+      questionIds: ["S3"],
+      activate: (answers) => (answers.S3 ?? 4) === 2,
+      priority: "optimization",
+      prerequisite: null,
+      effort: "medium",
+      quarter: 4,
+      title: {
+        es: "Reforzar formación continua y simulacros ante incidentes",
+        en: "Reinforce continuous training and incident drills"
+      },
+      result: "Cultura de ciberseguridad consolidada en toda la organización",
+      kpi: "Participación en simulacros y reducción de riesgos"
+    },
+    {
+      id: "discover-differentiation",
+      dimension: "foundations",
+      questionIds: ["D1", "D2", "D3"],
+      activate: (answers) => (answers.D1 ?? 0) >= 3 && (answers.D3 ?? 0) >= 3,
+      priority: "optimization",
+      prerequisite: null,
+      effort: "medium",
+      quarter: 4,
+      title: {
+        es: "Profundizar en experimentación y diferenciación de mercado",
+        en: "Deepen experimentation and market differentiation"
+      },
+      result: "Afinar la propuesta de valor con analítica avanzada",
+      kpi: "Modelos predictivos y optimización de márgenes"
+    }
   ],
 
   evaluate(calculation, answersById, contextAnswers, isEnglish) {
@@ -79,21 +468,6 @@ const DigitalVibesRecommendations = {
       });
     }
 
-    const opportunities = [...calculation.dimensions]
-      .sort((a, b) => a.percentage - b.percentage)
-      .filter((dimension) => dimension.percentage < 70)
-      .slice(0, 3)
-      .map((dimension) => ({
-        id: `opportunity-${dimension.id}`,
-        dimension: dimension.id,
-        title: dimension.name,
-        percentage: dimension.percentage,
-        evidence: calculation.answersByDimension?.[dimension.id] ?? [],
-        reason: dimension.percentage < 40
-          ? (isEnglish ? "Below 40%; fundamental gaps may block the next stage." : "Por debajo del 40 %; las brechas pueden bloquear la siguiente etapa.")
-          : (isEnglish ? "An improvement opportunity in this dimension." : "Una oportunidad de mejora en esta dimensión.")
-      }));
-
     const selectedActions = this.library
       .filter((action) => action.activate(answersById))
       .map((action) => ({
@@ -109,14 +483,28 @@ const DigitalVibesRecommendations = {
       quarter,
       actions: selectedActions.filter((action) => action.quarter === quarter)
     }));
-    if (!roadmap[0].actions.length && !riskAlerts.length) {
-      const firstGrowthAction = selectedActions[0] ?? null;
-      if (firstGrowthAction) roadmap[0].actions.push(firstGrowthAction);
-    }
+
+    // Si algún trimestre queda sin acciones específicas detectadas, asignar consolidación
+    const defaultQuarterFallbacks = isEnglish ? [
+      { id: "foundations-audit", title: { en: "Audit core foundations and digital assets" }, result: "Maintain digital assets aligned and operational" },
+      { id: "growth-review", title: { en: "Review acquisition and commercial conversion metrics" }, result: "Optimize campaign efficiency and contact flow" },
+      { id: "experience-tuning", title: { en: "Refine customer experience and retention touchpoints" }, result: "Elevate customer satisfaction and repeat loyalty" },
+      { id: "continuous-optimization", title: { en: "Strategic review and new tech experimentation" }, result: "Keep processes optimized and competitive" }
+    ] : [
+      { id: "foundations-audit", title: { es: "Auditoría de fundamentos y activos digitales" }, result: "Mantener los activos alineados y operativos" },
+      { id: "growth-review", title: { es: "Revisión de métricas comerciales y captación" }, result: "Optimizar eficiencia de canales y flujo comercial" },
+      { id: "experience-tuning", title: { es: "Afinar la experiencia del cliente y posventa" }, result: "Elevar satisfacción y fidelidad a largo plazo" },
+      { id: "continuous-optimization", title: { es: "Revisión estratégica y experimentación continua" }, result: "Mantener procesos optimizados y competitivos" }
+    ];
+
+    roadmap.forEach((stage, idx) => {
+      if (!stage.actions.length) {
+        stage.actions.push(defaultQuarterFallbacks[idx]);
+      }
+    });
 
     return {
       riskAlerts,
-      opportunities,
       selectedActions,
       roadmap,
       traceability: {
@@ -875,11 +1263,26 @@ if (typeof globalThis !== "undefined") {
       const bandKey = DigitalVibesCalculations.getGlobalBand(currentCalculation.global.percentage);
       bandValue.textContent = bandNames[bandKey];
       bandValue.dataset.band = bandKey;
+      const bandSummaries = isEnglish
+        ? {
+            initial: "Most digital practices are not yet implemented. Setting up core foundations will clarify the immediate next steps.",
+            development: "You have valuable initial initiatives, though they remain partial or inconsistent. Focused structure will build momentum.",
+            consolidation: "Functional digital capabilities are in place with relevant opportunities to connect and optimize.",
+            advanced: "Digital operations are largely consolidated. Focus on integrating and scaling across the entire journey.",
+            optimized: "Systematic data-driven measurement and continuous improvement drive strategic advantage."
+          }
+        : {
+            initial: "La mayoría de las prácticas aún no está implantada. Establecer las bases esenciales aclarará tus próximos pasos.",
+            development: "Hay iniciativas iniciales valiosas, pero son parciales o irregulares. Estructurar procesos dará impulso al negocio.",
+            consolidation: "Cuentas con capacidades funcionales en marcha, con brechas relevantes para conectar y optimizar.",
+            advanced: "Gestión digital bastante implantada; el foco prioritario es optimizar e integrar todo el recorrido.",
+            optimized: "Prácticas sistemáticas de medición y mejora continua que convierten tu ecosistema en una ventaja estratégica."
+          };
       const summary = assessment.querySelector("[data-assessment-summary]");
       if (summary) {
         summary.textContent = isEnglish
-          ? `Your global maturity level is ${bandNames[bandKey]}. Review your dimension comparison, strengths, and priority opportunities below.`
-          : `Tu nivel global de madurez es ${bandNames[bandKey]}. Revisa la comparativa, las fortalezas y las oportunidades prioritarias a continuación.`;
+          ? `Global level: ${bandNames[bandKey]} (${Math.round(currentCalculation.global.percentage)}%). ${bandSummaries[bandKey]}`
+          : `Nivel global: ${bandNames[bandKey]} (${Math.round(currentCalculation.global.percentage)}%). ${bandSummaries[bandKey]}`;
       }
 
       const chartLabels = isEnglish
@@ -927,19 +1330,83 @@ if (typeof globalThis !== "undefined") {
       const strengthContainer = assessment.querySelector("[data-assessment-strengths]");
       if (!riskContainer || !opportunityContainer || !roadmapContainer || !strengthContainer) return;
 
-      const contextIndex = isEnglish ? null : {
+      const contextIndex = {
         C1: contextQuestions[0] ? answers[questions.findIndex((item) => item.id === "C1")] : null,
         C2: contextQuestions[1] ? answers[questions.findIndex((item) => item.id === "C2")] : null
       };
-      const contextTone = contextIndex && (contextIndex.C1 || contextIndex.C2)
-        ? ` Para ${contextIndex.C1 || "tu empresa"} y un modelo de ${String(contextIndex.C2 || "negocio").toLowerCase()}, las recomendaciones se presentan con una aplicación práctica y acorde a tus recursos.`
-        : "";
 
       function getQuestionImplication(dimension, questionInDimension, score) {
         const implicationGroup = dimension.implications?.[questionInDimension];
         if (!implicationGroup) return "";
         const groupIndex = score <= 1 ? 0 : score === 2 ? 1 : 2;
-        return implicationGroup[groupIndex];
+        return implicationGroup[groupIndex] || "";
+      }
+
+      const contextSize = contextIndex?.C1;
+      const contextModel = contextIndex?.C2;
+      const isSmallBiz = contextSize === "1–10";
+      const isMidOrLargeBiz = contextSize === "51–250" || contextSize === "Más de 250" || contextSize === "More than 250";
+
+      let contextNarrative = "";
+      if (contextSize || contextModel) {
+        if (isEnglish) {
+          const sizeTxt = contextSize ? `team size of ${contextSize}` : "";
+          const modelTxt = contextModel ? `a ${contextModel.toLowerCase()} model` : "";
+          const joined = [sizeTxt, modelTxt].filter(Boolean).join(" and ");
+          contextNarrative = ` Personalized for your ${joined}, prioritizing agile execution aligned with your scale.`;
+        } else {
+          const sizeTxt = contextSize ? `un equipo de ${contextSize} personas` : "";
+          const modelTxt = contextModel ? `un modelo de ${contextModel.toLowerCase()}` : "";
+          const joined = [sizeTxt, modelTxt].filter(Boolean).join(" y ");
+          contextNarrative = ` Adaptado a la realidad de tu negocio (${joined}), enfocando acciones con alto retorno y acordes a tu capacidad operativa.`;
+        }
+      }
+
+      function synthesizeStrength(dimension, strongestItems) {
+        if (!strongestItems.length) return "";
+        const itemSummaries = strongestItems.map((item) => {
+          const baseText = getQuestionImplication(dimension, item.index, item.score);
+          if (isEnglish) {
+            return `have consolidated ${dimension.name.toLowerCase()} capabilities (${baseText.toLowerCase()})`;
+          }
+          return `cuentas con un desempeño destacado en este ámbito: ${baseText.charAt(0).toLowerCase() + baseText.slice(1)}`;
+        }).join(isEnglish ? " and " : ". Además, ");
+
+        if (isEnglish) {
+          return `Your business shows strong maturity here: you ${itemSummaries}. Use this solid foundation as a competitive advantage to accelerate other digital initiatives.`;
+        }
+        return `Tu negocio demuestra madurez y solvencia en esta área: ${itemSummaries}. Esta base sólida constituye una ventaja competitiva clave para apalancar el crecimiento en el resto de tu ecosistema digital.`;
+      }
+
+      function synthesizeOpportunity(item) {
+        const baseImplication = getQuestionImplication(item.dimension, item.index, item.score);
+        const isCritical = item.score <= 1;
+
+        if (isEnglish) {
+          const urgency = isCritical ? "Critical priority:" : "Opportunity for improvement:";
+          let tailoredAdvice = isCritical
+            ? `Addressing this gap will unblock foundational performance. ${baseImplication}`
+            : `Refining this process will increase consistency and efficiency. ${baseImplication}`;
+          if (isSmallBiz) {
+            tailoredAdvice += " We recommend lean tools and direct ownership to maintain agility.";
+          } else if (isMidOrLargeBiz) {
+            tailoredAdvice += " We recommend establishing standard SOPs and cross-team alignment.";
+          }
+          return `${urgency} ${tailoredAdvice}`;
+        }
+
+        const urgency = isCritical ? "Atención prioritaria:" : "Oportunidad de mejora:";
+        let tailoredAdvice = isCritical
+          ? `Resolver esta brecha evitará fugas de oportunidades en tus canales. ${baseImplication}`
+          : `Regularizar y sistematizar este proceso aumentará la consistencia del negocio. ${baseImplication}`;
+
+        if (isSmallBiz) {
+          tailoredAdvice += " Para equipos ágiles, la clave es adoptar herramientas directas y procesos ligeros sin sobrecargar la operativa.";
+        } else if (isMidOrLargeBiz) {
+          tailoredAdvice += " Para organizaciones de tu escala, es fundamental estandarizar protocolos claros y responsabilidades entre áreas.";
+        }
+
+        return `${urgency} ${tailoredAdvice}`;
       }
 
       const strongDimensions = [...currentCalculation.dimensions]
@@ -949,6 +1416,7 @@ if (typeof globalThis !== "undefined") {
           return scores.some((score) => score >= 3);
         })
         .slice(0, 2);
+
       strengthContainer.replaceChildren(...(strongDimensions.length ? strongDimensions.map((strength) => {
         const article = document.createElement("article");
         article.className = "assessment-rule-card";
@@ -956,8 +1424,11 @@ if (typeof globalThis !== "undefined") {
         icon.className = "assessment-rule-icon";
         icon.setAttribute("aria-hidden", "true");
         icon.textContent = "↗";
+        const header = document.createElement("div");
+        header.className = "assessment-rule-header";
         const title = document.createElement("strong");
         title.textContent = `${strength.name} · ${Math.round(strength.percentage)}%`;
+        header.append(icon, title);
         const text = document.createElement("p");
         const dimensionIndex = dimensions.findIndex((dimension) => dimension.id === strength.id);
         const dimension = dimensions[dimensionIndex];
@@ -966,21 +1437,18 @@ if (typeof globalThis !== "undefined") {
           .filter((item) => item.score >= 3)
           .sort((a, b) => b.score - a.score)
           .slice(0, 2);
-        const detail = strongestItems.map((item) =>
-          getQuestionImplication(dimension, item.index, item.score)
-        ).filter(Boolean).join(" ");
-        text.textContent = isEnglish
-          ? `${detail || "This dimension is a relative strength and provides a practical base for the next stage."} Keep the practice consistent and use its results to guide growth.`
-          : `${detail || "Esta dimensión es una fortaleza relativa y ofrece una base práctica para avanzar."} Mantén la práctica constante y usa sus resultados para orientar el crecimiento.${contextTone}`;
-        article.append(icon, title, text);
+
+        const synthesizedText = synthesizeStrength(dimension, strongestItems);
+        text.textContent = `${synthesizedText}${contextNarrative}`;
+        article.append(header, text);
         return article;
       }) : [(() => {
         const article = document.createElement("article");
         article.className = "assessment-rule-card";
         const text = document.createElement("p");
         text.textContent = isEnglish
-          ? "No dimension currently reaches 40%. Establish the priority fundamentals before identifying clear strengths."
-          : "Ninguna dimensión alcanza el 40 %. Consolida primero los fundamentos prioritarios antes de identificar fortalezas claras.";
+          ? "No dimension currently reaches an advanced level. Establishing the priority fundamentals in Discover, Connect, and Security will quickly generate your first strong pillars."
+          : `Actualmente ninguna dimensión alcanza un nivel avanzado consolidado. Enfocar los esfuerzos iniciales en Discover, Connect y Seguridad sentará de inmediato tus primeras fortalezas estratégicas.${contextNarrative}`;
         article.append(text);
         return article;
       })()]));
@@ -993,11 +1461,14 @@ if (typeof globalThis !== "undefined") {
             icon.className = "assessment-rule-icon";
             icon.setAttribute("aria-hidden", "true");
             icon.textContent = "!";
+            const header = document.createElement("div");
+            header.className = "assessment-rule-header";
             const title = document.createElement("strong");
             title.textContent = alert.title;
+            header.append(icon, title);
             const text = document.createElement("p");
             text.textContent = alert.explanation;
-            article.append(icon, title, text);
+            article.append(header, text);
             return article;
           })
         : [(() => {
@@ -1005,23 +1476,25 @@ if (typeof globalThis !== "undefined") {
             article.className = "assessment-rule-card";
             const text = document.createElement("p");
             text.textContent = isEnglish
-              ? "No essential security alert is active. Keep reviewing protection and recovery regularly."
-              : "No hay una alerta esencial de seguridad activa. Mantén revisadas la protección y la recuperación.";
+              ? "No critical digital risks detected. Core security and baseline protections are currently operating above critical thresholds."
+              : "No se identificaron alertas críticas de seguridad inmediata. Las medidas esenciales de protección operan por encima de los umbrales de riesgo.";
             article.append(text);
             return article;
           })()]
       ));
 
-      const dimensionPriority = ["foundations", "conversion", "security", "demand", "loyalty", "automation"];
+      // Priorizar bloqueos críticos en Discover, Connect o Seguridad primero
       const weakItems = dimensions.flatMap((dimension) =>
         (currentCalculation.answersByDimension?.[dimension.id] ?? [])
-          .map((score, index) => ({ dimension, score, index }))
+          .map((score, index) => {
+            const isCriticalCore = (score <= 1) && (dimension.id === "foundations" || dimension.id === "conversion" || dimension.id === "security");
+            return { dimension, score, index, isCriticalCore };
+          })
           .filter((item) => item.score <= 2)
-      ).sort((a, b) =>
-        (a.score - b.score) ||
-        (dimensionPriority.indexOf(a.dimension.id) - dimensionPriority.indexOf(b.dimension.id)) ||
-        (a.index - b.index)
-      ).slice(0, 3);
+      ).sort((a, b) => {
+        if (a.isCriticalCore !== b.isCriticalCore) return a.isCriticalCore ? -1 : 1;
+        return (a.score - b.score) || (a.index - b.index);
+      }).slice(0, 3);
 
       opportunityContainer.replaceChildren(...(weakItems.length ? weakItems.map((item) => {
         const article = document.createElement("article");
@@ -1030,22 +1503,22 @@ if (typeof globalThis !== "undefined") {
         icon.className = "assessment-rule-icon";
         icon.setAttribute("aria-hidden", "true");
         icon.textContent = "→";
+        const header = document.createElement("div");
+        header.className = "assessment-rule-header";
         const title = document.createElement("strong");
-        title.textContent = isEnglish
-          ? `${item.dimension.name} · ${item.score}/4`
-          : `${item.dimension.name} · ${item.score}/4`;
+        title.textContent = `${item.dimension.name} · ${item.score}/4`;
+        header.append(icon, title);
         const text = document.createElement("p");
-        const detail = getQuestionImplication(item.dimension, item.index, item.score);
-        text.textContent = `${detail}${contextTone}`;
-        article.append(icon, title, text);
+        text.textContent = synthesizeOpportunity(item);
+        article.append(header, text);
         return article;
       }) : [(() => {
         const article = document.createElement("article");
         article.className = "assessment-rule-card";
         const text = document.createElement("p");
         text.textContent = isEnglish
-          ? "No critical or intermediate gaps were identified. Protect the current system and expand the strongest practices."
-          : `No se identificaron brechas críticas o intermedias. Protege el sistema actual y escala las prácticas más sólidas.${contextTone}`;
+          ? "No critical or intermediate gaps were identified across evaluated items. Focus on continuous experimentation and sustaining your current leadership."
+          : `No se identificaron brechas críticas o intermedias en los ítems evaluados. El foco recomendado es mantener la disciplina de medición y explorar experimentación avanzada.${contextNarrative}`;
         article.append(text);
         return article;
       })()]));
@@ -1094,16 +1567,20 @@ if (typeof globalThis !== "undefined") {
         const article = document.createElement("article");
         article.className = "assessment-roadmap-stage";
         const title = document.createElement("h4");
-        title.textContent = isEnglish
-          ? `Months ${(stage.quarter - 1) * 3 + 1}–${stage.quarter * 3}`
-          : `Meses ${(stage.quarter - 1) * 3 + 1}–${stage.quarter * 3}`;
+        const stageNames = isEnglish
+          ? ["Months 1–3 · Fundamentals", "Months 4–6 · Activation", "Months 7–9 · Optimization", "Months 10–12 · Consolidation"]
+          : ["Meses 1–3 · Fundamentos", "Meses 4–6 · Activación", "Meses 7–9 · Optimización", "Meses 10–12 · Consolidación"];
+        title.textContent = stageNames[stage.quarter - 1] ?? (isEnglish ? `Quarter ${stage.quarter}` : `Trimestre ${stage.quarter}`);
         const list = document.createElement("ul");
         const visibleActions = stage.actions.length
           ? stage.actions
           : [{ id: "review", result: isEnglish ? "Review KPIs and maintain the established plan." : "Revisar KPI y mantener el plan establecido." }];
         list.append(...visibleActions.map((action) => {
           const item = document.createElement("li");
-          item.textContent = actionTitles[action.id] ?? action.result;
+          const actionTitle = action.title
+            ? (isEnglish ? action.title.en : action.title.es)
+            : (actionTitles[action.id] ?? action.result);
+          item.textContent = actionTitle;
           if (action.evidence?.length) {
             item.title = action.evidence.map((evidence) =>
               `${evidence.questionId}: ${evidence.answer}`
