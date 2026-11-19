@@ -1201,7 +1201,7 @@ if (typeof globalThis !== "undefined") {
     const copy = isEnglish ? {
       question: (current, total) => `Question ${current} of ${total}`,
       next: "Next question →",
-      finish: "Complete the form →",
+      finish: "Complete analysis →",
       previous: "← Previous",
       strongestTitle: "Where you are building momentum",
       buildFromTitle: "A useful place to build from",
@@ -1214,7 +1214,7 @@ if (typeof globalThis !== "undefined") {
     } : {
       question: (current, total) => `Pregunta ${current} de ${total}`,
       next: "Siguiente pregunta →",
-      finish: "Completar el formulario →",
+      finish: "Completar análisis →",
       previous: "← Anterior",
       strongestTitle: "Dónde estás generando impulso",
       buildFromTitle: "Una base para seguir creciendo",
@@ -1356,11 +1356,11 @@ if (typeof globalThis !== "undefined") {
 
     function renderInterpretation() {
       const interpretation = currentCalculation.interpretation;
-      const riskContainer = assessment.querySelector("[data-assessment-risk-alerts]");
-      const opportunityContainer = assessment.querySelector("[data-assessment-opportunities]");
-      const roadmapContainer = assessment.querySelector("[data-assessment-roadmap]");
       const strengthContainer = assessment.querySelector("[data-assessment-strengths]");
-      if (!riskContainer || !opportunityContainer || !strengthContainer) return;
+      const oppFlowContainer = assessment.querySelector("[data-assessment-opportunities-flow]");
+      const oppTransversalContainer = assessment.querySelector("[data-assessment-opportunities-transversal]");
+      const oppTransversalWrapper = assessment.querySelector("[data-assessment-transversal-wrapper]");
+      if (!strengthContainer || !oppFlowContainer) return;
 
       const contextIndex = {
         C1: contextQuestions[0] ? answers[questions.findIndex((item) => item.id === "C1")] : null,
@@ -1399,68 +1399,80 @@ if (typeof globalThis !== "undefined") {
         const [s0, s1, s2] = scores;
         const texts = dim.implications || [];
 
-        // Reglas de combinación específicas:
-        // Caso IA/automatización
+        // Caso IA/automatización transversal
         if (dim.id === "automation") {
           if (s0 <= 1 && s1 <= 1) {
             return isEnglish
-              ? "The primary opportunity is identifying manual repetitive processes and clear use cases; we do not recommend complex tools yet."
-              : "La oportunidad principal es identificar procesos repetitivos y casos de uso claros; no se recomienda incorporar herramientas complejas aún.";
+              ? "The primary opportunity is identifying manual repetitive processes across VIBE FLOW; we recommend simple automations before deploying advanced AI."
+              : "La oportunidad principal es identificar procesos repetitivos en las etapas de VIBE FLOW; conviene mapear tareas y adoptar automatizaciones sencillas antes de sumar herramientas complejas.";
           }
           if (s0 >= 3 && s1 <= 1) {
             return isEnglish
-              ? "Processes are identified, but AI is not currently utilized; consider conventional automation where it best solves the workload."
-              : "Los procesos están identificados, pero no se hace uso relevante de IA; conviene valorar automatización convencional si resuelve mejor el problema.";
+              ? "Processes are mapped, but AI/automation is underutilized; consider conventional rules and automation to power your marketing and customer operations."
+              : "Los procesos están identificados, pero no se hace uso relevante de automatización o IA; conviene valorar flujos convencionales para potenciar la captación y conversión.";
           }
           if (s0 <= 1 && s1 >= 3) {
             return isEnglish
-              ? "AI is actively used, but process prioritization is lacking; review whether current usage addresses genuine core needs."
-              : "Hay uso de IA, pero falta priorizar procesos; conviene revisar si ese uso resuelve necesidades reales del negocio.";
+              ? "AI is used occasionally, but process prioritization is lacking; align digital tools with actual bottlenecks in your commercial journey."
+              : "Hay uso de IA, pero falta priorizar procesos; conviene alinear estas herramientas con los cuellos de botella reales de tu circuito comercial.";
           }
           if (s1 >= 3 && s2 <= 1) {
             return isEnglish
-              ? "AI is in use, but supervision, precision, and trust controls must be reinforced before scaling further."
-              : "Tu negocio ya utiliza IA, pero necesita reforzar la revisión, privacidad y control de calidad antes de ampliar su uso.";
+              ? "AI is in use, but verification and trust safeguards must be established to protect customer confidence."
+              : "Tu negocio ya utiliza IA, pero necesita reforzar la revisión humana, calidad y privacidad para asegurar la confianza de tus clientes.";
           }
-          if (pct < 40) {
-            return isEnglish
-              ? "Your business has headroom to leverage technology to save time and reduce manual tasks. The opportunity lies in detecting repetitive tasks and choosing proportionate tools."
-              : "Tu negocio todavía tiene margen para identificar dónde la tecnología puede ahorrar tiempo y reducir tareas manuales. La oportunidad no consiste en incorporar herramientas por tendencia, sino en detectar procesos repetitivos y elegir soluciones proporcionadas.";
-          }
+          return isEnglish
+            ? "Your business has significant headroom to leverage technology to reduce repetitive manual tasks across your customer journey."
+            : "Tu negocio tiene margen para incorporar automatizaciones útiles que reduzcan tareas manuales y agilicen la respuesta en las etapas de VIBE FLOW.";
         }
 
-        // Caso General según intervalos oficiales (0-39%, 40-74%, 75-100%)
+        // Caso Ciberseguridad transversal
+        if (dim.id === "security") {
+          const breaches = [];
+          if (s0 <= 1) breaches.push(isEnglish ? "account security and MFA" : "protección de cuentas clave y MFA");
+          if (s1 <= 1) breaches.push(isEnglish ? "verified backups" : "copias de seguridad probadas");
+          if (s2 <= 1) breaches.push(isEnglish ? "incident response awareness" : "protocolos básicos ante incidentes");
+
+          return isEnglish
+            ? `Strengthening digital protection (${breaches.join(", ")}) is critical to safeguard customer trust and guarantee operational continuity throughout your digital operations.`
+            : `Reforzar la protección digital (${breaches.join(", ")}) es fundamental para blindar la confianza de tus clientes y garantizar la continuidad en todas las etapas de tu negocio.`;
+        }
+
+        // Caso General VIBE FLOW según intervalos oficiales (0-39%, 40-74%, 75-100%)
         if (pct >= 75) {
           const hasLow = scores.some((sc) => sc <= 1);
           if (hasLow) {
             const lowIdx = scores.findIndex((sc) => sc <= 1);
             const lowImplication = texts[lowIdx]?.[0] || "";
             return isEnglish
-              ? `${dim.name} is a consolidated area overall, though a specific gap remains: ${lowImplication.toLowerCase()}`
-              : `La relación y escucha de clientes están bien desarrolladas en ${dim.name}, pero existe una brecha concreta que atender: ${lowImplication.charAt(0).toLowerCase() + lowImplication.slice(1)}`;
+              ? `${dim.name} is a consolidated stage overall, though a specific gap remains: ${lowImplication.toLowerCase()}`
+              : `La etapa ${dim.name} está bien desarrollada en general, pero existe un aspecto puntual a atender: ${lowImplication.charAt(0).toLowerCase() + lowImplication.slice(1)}`;
           }
           return isEnglish
-            ? `${dim.name} represents a consolidated capability with consistent, organized practices. Focus on sustaining performance and continuous differentiation.`
-            : `${dim.name} representa un área consolidada con procesos organizados y medibles. Conviene mantener la revisión periódica para asegurar diferenciación continua.`;
+            ? `${dim.name} represents an established strength with organized, continuous practices. Keep refining differentiation and performance.`
+            : `La etapa ${dim.name} representa una fortaleza consolidada con procesos organizados y medibles. Conviene mantener la revisión periódica para asegurar diferenciación continua.`;
         } else if (pct >= 40) {
           return isEnglish
-            ? `${dim.name} is currently your best developed dimension or in active progress. Functional practices exist, though connecting the remaining irregular areas will solidify the system.`
-            : `${dim.name} es actualmente tu dimensión mejor desarrollada o en desarrollo activo. Hay prácticas existentes que funcionan, aunque todavía existen oportunidades para consolidarlas y hacerlas sistemáticas.`;
+            ? `${dim.name} is currently in active development. Functional practices exist, though structuring regular routines will increase consistency.`
+            : `La etapa ${dim.name} cuenta con prácticas existentes que funcionan, aunque todavía existen aspectos irregulares para estructurar y consolidar.`;
         } else {
           const breaches = scores
             .map((sc, idx) => ({ sc, text: texts[idx]?.[0] }))
             .filter((item) => item.sc <= 1 && item.text)
             .map((item) => item.text);
           return isEnglish
-            ? `Priority improvement area in ${dim.name}: ${breaches.join(" ")}`
-            : `Área prioritaria de mejora en ${dim.name}: ${breaches.join(" ")}`;
+            ? `Priority focus in ${dim.name}: ${breaches.join(" ")}`
+            : `Enfoque prioritario en ${dim.name}: ${breaches.join(" ")}`;
         }
       }
 
-      // 1. FORTALEZAS: Hasta dos. Criterio oficial:
-      // - Dimensión >= 75% si ninguna pregunta es 0-1 (o si tiene 0-1, se muestra como fortaleza con brecha concreta).
-      // - Si ninguna llega al 75%, una dimensión entre 40-74% puede ser "área mejor desarrollada", no "fortaleza consolidada".
-      const candidateStrengths = [...currentCalculation.dimensions]
+      // =========================================================================
+      // 1. FORTALEZAS (Exclusivamente de las cuatro etapas de VIBE FLOW)
+      // "No mostrar IA, automatización ni ciberseguridad como fortalezas"
+      // =========================================================================
+      const flowDimensionIds = ["foundations", "demand", "conversion", "loyalty"];
+      const candidateStrengths = currentCalculation.dimensions
+        .filter((dim) => flowDimensionIds.includes(dim.id))
         .map((dim) => {
           const scores = currentCalculation.answersByDimension?.[dim.id] ?? [0, 0, 0];
           return { dim, scores, percentage: dim.percentage };
@@ -1483,7 +1495,7 @@ if (typeof globalThis !== "undefined") {
         const isConsolidated = item.percentage >= 75;
         const tag = isConsolidated
           ? (isEnglish ? "Consolidated strength" : "Fortaleza consolidada")
-          : (isEnglish ? "Best developed area" : "Área mejor desarrollada");
+          : (isEnglish ? "Best developed stage" : "Etapa mejor desarrollada");
         const title = document.createElement("strong");
         title.textContent = `${item.dim.name} · ${Math.round(item.percentage)}% (${tag})`;
         header.append(icon, title);
@@ -1496,67 +1508,29 @@ if (typeof globalThis !== "undefined") {
         article.className = "assessment-rule-card";
         const text = document.createElement("p");
         text.textContent = isEnglish
-          ? "No dimension currently reaches 40%. Focus initially on establishing the core fundamentals across VIBE FLOW and Security."
-          : `Actualmente ninguna dimensión alcanza el 40 %. Enfocar los esfuerzos iniciales en asentar las bases esenciales del recorrido VIBE FLOW y la seguridad permitirá generar rápidamente tus primeras fortalezas.${contextNarrative}`;
+          ? "No stage of VIBE FLOW currently reaches 40%. Focus initially on establishing the core fundamentals in Discover and Connect."
+          : `Actualmente ninguna etapa de VIBE FLOW alcanza el 40 %. Enfocar los esfuerzos iniciales en asentar las bases esenciales de Discover y Connect permitirá generar rápidamente tus primeras fortalezas.${contextNarrative}`;
         article.append(text);
         return article;
       })()]));
 
-      // 2. ALERTAS ESENCIALES (Pág. 5 del brief: agrupadas en una sola tarjeta con subtítulos si hay varias)
-      riskContainer.replaceChildren(...(interpretation.riskAlerts.length
-        ? interpretation.riskAlerts.map((alert) => {
-            const article = document.createElement("article");
-            article.className = "assessment-rule-card assessment-risk";
-            const icon = document.createElement("span");
-            icon.className = "assessment-rule-icon";
-            icon.setAttribute("aria-hidden", "true");
-            icon.textContent = "!";
-            const header = document.createElement("div");
-            header.className = "assessment-rule-header";
-            const title = document.createElement("strong");
-            title.textContent = alert.title;
-            header.append(icon, title);
-            const text = document.createElement("p");
-            text.textContent = alert.explanation;
-            article.append(header, text);
-            return article;
-          })
-        : [(() => {
-            const article = document.createElement("article");
-            article.className = "assessment-rule-card";
-            const text = document.createElement("p");
-            text.textContent = isEnglish
-              ? "No essential security risks detected. Account protection and backups are operating above critical thresholds."
-              : "No se identificaron alertas críticas de ciberseguridad. Las medidas de protección esencial operan por encima de los umbrales de riesgo.";
-            article.append(text);
-            return article;
-          })()]
-      ));
-
-      // 3. OPORTUNIDADES DE CRECIMIENTO: Hasta tres, agrupadas por dimensión
-      // Priorizar preguntas 0-1 y dimensiones < 40%. Agrupar varias brechas de una misma dimensión en una sola tarjeta.
-      const lowDimensions = [...currentCalculation.dimensions]
+      // =========================================================================
+      // 2. OPORTUNIDADES DE CRECIMIENTO
+      // 2. A. Oportunidades del circuito VIBE FLOW (Discover, Amplify, Connect, Evolve)
+      // =========================================================================
+      const flowOpportunities = currentCalculation.dimensions
+        .filter((dim) => flowDimensionIds.includes(dim.id))
         .map((dim) => {
           const scores = currentCalculation.answersByDimension?.[dim.id] ?? [0, 0, 0];
-          const lowScores = scores
-            .map((score, index) => ({ score, index }))
-            .filter((item) => item.score <= 1);
-          const irregularScores = scores
-            .map((score, index) => ({ score, index }))
-            .filter((item) => item.score === 2);
-          return { dim, scores, lowScores, irregularScores, percentage: dim.percentage };
+          const lowScores = scores.filter((s) => s <= 1);
+          return { dim, scores, lowCount: lowScores.length, percentage: dim.percentage };
         })
-        .filter((item) => item.percentage < 75 || item.lowScores.length > 0)
-        .sort((a, b) => {
-          // Severidad: primero dimensiones con preguntas críticas (0-1), luego menor porcentaje
-          const aCrit = a.lowScores.length;
-          const bCrit = b.lowScores.length;
-          if (aCrit !== bCrit) return bCrit - aCrit;
-          return a.percentage - b.percentage;
-        })
-        .slice(0, 3);
+        // Mostrar etapas que necesitan evolucionar (menores a 75% o con ítems críticos 0-1)
+        .filter((item) => item.percentage < 75 || item.lowCount > 0)
+        // Ordenar según prioridad: mayor cantidad de bloqueos críticos (0-1), luego menor porcentaje
+        .sort((a, b) => (b.lowCount - a.lowCount) || (a.percentage - b.percentage));
 
-      opportunityContainer.replaceChildren(...(lowDimensions.length ? lowDimensions.map((item) => {
+      oppFlowContainer.replaceChildren(...(flowOpportunities.length ? flowOpportunities.map((item, idx) => {
         const article = document.createElement("article");
         article.className = "assessment-rule-card";
         const icon = document.createElement("span");
@@ -1566,15 +1540,13 @@ if (typeof globalThis !== "undefined") {
         const header = document.createElement("div");
         header.className = "assessment-rule-header";
         const title = document.createElement("strong");
-        title.textContent = `${item.dim.name} · ${Math.round(item.percentage)}%`;
+        title.textContent = `${item.dim.name} · ${Math.round(item.percentage)}% (${isEnglish ? `Priority ${idx + 1}` : `Prioridad ${idx + 1}`})`;
         header.append(icon, title);
         const text = document.createElement("p");
-
-        const synthesis = buildDimensionSynthesis(item.dim, item.scores);
-        text.textContent = synthesis + (isSmallBiz
-          ? (isEnglish ? " Recommended approach: prioritize lean direct tools." : " Enfoque recomendado: priorizar herramientas ligeras y directas sin complejidad innecesaria.")
+        text.textContent = buildDimensionSynthesis(item.dim, item.scores) + (isSmallBiz
+          ? (isEnglish ? " Recommended approach: lean, direct tools to keep operations agile." : " Enfoque recomendado: herramientas ligeras y directas sin sobrecargar la operativa.")
           : isMidOrLargeBiz
-          ? (isEnglish ? " Recommended approach: standardize cross-team ownership and SOPs." : " Enfoque recomendado: estandarizar protocolos y responsabilidades compartidas.")
+          ? (isEnglish ? " Recommended approach: define standardized ownership and cross-area workflows." : " Enfoque recomendado: definir protocolos estandarizados y responsables entre áreas.")
           : "");
         article.append(header, text);
         return article;
@@ -1583,11 +1555,51 @@ if (typeof globalThis !== "undefined") {
         article.className = "assessment-rule-card";
         const text = document.createElement("p");
         text.textContent = isEnglish
-          ? "No critical gaps were identified across evaluated dimensions. Focus on continuous experimentation and sustaining your leadership."
-          : `No se identificaron brechas críticas en las dimensiones evaluadas. El foco recomendado es mantener la disciplina de medición y explorar optimización continua.${contextNarrative}`;
+          ? "All stages of VIBE FLOW are consolidated above 75%. Focus on continuous experimentation and margin optimization."
+          : `Todas las etapas del circuito VIBE FLOW se encuentran consolidadas por encima del 75 %. El foco recomendado es mantener la medición y explorar optimización continua.${contextNarrative}`;
         article.append(text);
         return article;
       })()]));
+
+      // =========================================================================
+      // 2. B. Oportunidades de las capacidades transversales
+      // "Mostrar IA y automatización y/o Ciberseguridad ÚNICAMENTE cuando su puntuación sea <= 25%"
+      // "Si una capacidad transversal obtiene más del 25 %, NO debe mostrarse en este apartado"
+      // =========================================================================
+      const transversalDimensions = currentCalculation.dimensions
+        .filter((dim) => ["automation", "security"].includes(dim.id))
+        .filter((dim) => dim.percentage <= 25)
+        .map((dim) => ({
+          dim,
+          scores: currentCalculation.answersByDimension?.[dim.id] ?? [0, 0, 0],
+          percentage: dim.percentage
+        }));
+
+      if (oppTransversalWrapper && oppTransversalContainer) {
+        if (transversalDimensions.length > 0) {
+          oppTransversalWrapper.hidden = false;
+          oppTransversalContainer.replaceChildren(...transversalDimensions.map((item) => {
+            const article = document.createElement("article");
+            article.className = "assessment-rule-card assessment-risk";
+            const icon = document.createElement("span");
+            icon.className = "assessment-rule-icon";
+            icon.setAttribute("aria-hidden", "true");
+            icon.textContent = "!";
+            const header = document.createElement("div");
+            header.className = "assessment-rule-header";
+            const title = document.createElement("strong");
+            title.textContent = `${item.dim.name} · ${Math.round(item.percentage)}% (${isEnglish ? "Transversal Capability" : "Capacidad Transversal"})`;
+            header.append(icon, title);
+            const text = document.createElement("p");
+            text.textContent = buildDimensionSynthesis(item.dim, item.scores);
+            article.append(header, text);
+            return article;
+          }));
+        } else {
+          oppTransversalWrapper.hidden = true;
+          oppTransversalContainer.replaceChildren();
+        }
+      }
 
       const actionTitles = isEnglish ? {
         "security-mfa": "Activate MFA and review critical account access",
@@ -1753,7 +1765,26 @@ if (typeof globalThis !== "undefined") {
         renderQuestion();
         questionTitle.focus({ preventScroll: true });
       } else {
-        currentCalculation = calculateAssessment();
+        try {
+          currentCalculation = calculateAssessment();
+        } catch (err) {
+          console.error("Error al calcular el diagnóstico:", err);
+          // Mostrar error visible en el statusEl del quiz (antes de llegar al formulario)
+          const quizPanel = assessment.querySelector("[data-assessment-view=\"quiz\"]");
+          if (quizPanel) {
+            let errMsg = quizPanel.querySelector(".assessment-calc-error");
+            if (!errMsg) {
+              errMsg = document.createElement("p");
+              errMsg.className = "assessment-calc-error assessment-note";
+              errMsg.style.color = "var(--color-risk, #e53e3e)";
+              quizPanel.appendChild(errMsg);
+            }
+            errMsg.textContent = isEnglish
+              ? "Could not calculate results. Make sure all 18 evaluative questions are answered."
+              : "No se pudo calcular el análisis. Asegúrate de haber respondido las 18 preguntas evaluativas.";
+          }
+          return;
+        }
         renderCalculation();
         showView("complete");
         assessment.querySelector("#assessment-complete-title").focus({ preventScroll: true });
@@ -1774,14 +1805,21 @@ if (typeof globalThis !== "undefined") {
       const status = assessment.querySelector("[data-assessment-form-status]");
       if (!mapForm.reportValidity()) {
         status.textContent = isEnglish
-          ? "Please enter a valid email and accept the map request."
-          : "Introduce un email válido y acepta la solicitud del mapa.";
+          ? "Please fill in all required fields and accept the map request."
+          : "Por favor, completa todos los campos obligatorios y acepta la solicitud del mapa.";
         return;
       }
       if (!currentCalculation) return;
+
       const formData = new FormData(mapForm);
+      const email     = String(formData.get("email") || "").trim();
+      const firstName = String(formData.get("firstName") || "").trim();
+      const lastName  = String(formData.get("lastName") || "").trim();
+      const company   = String(formData.get("company") || "").trim();
+
+      // ── Persist to session ──────────────────────────────────────────────────
       const request = {
-        email: String(formData.get("email") || ""),
+        email, firstName, lastName, company,
         mapConsent: formData.get("mapConsent") === "on",
         marketingConsent: formData.get("marketingConsent") === "on",
         submittedAt: new Date().toISOString(),
@@ -1789,12 +1827,153 @@ if (typeof globalThis !== "undefined") {
       };
       try {
         sessionStorage.setItem("digital-vibes-map-request", JSON.stringify(request));
-      } catch (error) {
-        console.warn("The map request could not be kept for this browser session.", error);
+      } catch (err) {
+        console.warn("Session storage unavailable:", err);
       }
-      status.textContent = isEnglish
-        ? "Request registered for this browser session. The 12-month map can now be prepared."
-        : "Solicitud registrada en esta sesión del navegador. Ya puedes preparar el mapa a 12 meses.";
+
+      // ── Build plain-text report ─────────────────────────────────────────────
+      const dim = currentCalculation.dimensions || [];
+      const flowIds = ["foundations", "demand", "conversion", "loyalty"];
+      const transIds = ["automation", "security"];
+
+      // Dimension name helper
+      function dimName(id) {
+        const d = dim.find((x) => x.id === id);
+        return d ? d.name : id;
+      }
+      function dimPct(id) {
+        const d = dim.find((x) => x.id === id);
+        return d ? Math.round(d.percentage) : 0;
+      }
+
+      // Collect strengths (flow dims >= 40%)
+      const strengths = dim
+        .filter((d) => flowIds.includes(d.id) && d.percentage >= 40)
+        .sort((a, b) => b.percentage - a.percentage)
+        .slice(0, 2);
+
+      // Collect flow opportunities (flow dims < 75%)
+      const oppFlow = dim
+        .filter((d) => flowIds.includes(d.id) && d.percentage < 75)
+        .sort((a, b) => a.percentage - b.percentage);
+
+      // Collect transversal opportunities (<= 25%)
+      const oppTransversal = dim
+        .filter((d) => transIds.includes(d.id) && d.percentage <= 25);
+
+      const globalPct = Math.round(currentCalculation.global?.percentage ?? 0);
+      const bandKey   = DigitalVibesCalculations.getGlobalBand(currentCalculation.global?.percentage ?? 0);
+      const bandNames = isEnglish
+        ? { initial:"Initial", development:"In development", consolidation:"In consolidation", advanced:"Advanced", optimized:"Optimized" }
+        : { initial:"Inicial", development:"En desarrollo", consolidation:"En consolidación", advanced:"Avanzado", optimized:"Optimizado" };
+
+      const lines = isEnglish ? [
+        "DIGITAL VIBES — DIAGNOSTIC REPORT",
+        "====================================",
+        "",
+        `User:    ${firstName} ${lastName}`,
+        `Email:   ${email}`,
+        `Company: ${company}`,
+        `Date:    ${new Date().toLocaleString("en-AR")}`,
+        "",
+        `GLOBAL SCORE: ${globalPct}% — ${bandNames[bandKey]}`,
+        "",
+        "── DIMENSION SCORES ──────────────────────────────",
+        ...dim.map((d) => `  ${d.name}: ${Math.round(d.percentage)}%`),
+        "",
+        "── 1. STRENGTHS ──────────────────────────────────",
+        ...(strengths.length
+          ? strengths.map((d) => `  ✔ ${d.name}: ${Math.round(d.percentage)}%`)
+          : ["  No consolidated strengths yet — focus on building foundations."]),
+        "",
+        "── 2. GROWTH OPPORTUNITIES ───────────────────────",
+        "",
+        "  2A. VIBE FLOW Circuit Opportunities:",
+        ...(oppFlow.length
+          ? oppFlow.map((d) => `    • ${d.name}: ${Math.round(d.percentage)}%`)
+          : ["    All VIBE FLOW stages are above 75% — focus on optimisation."]),
+        ...(oppTransversal.length ? [
+          "",
+          "  2B. Transversal Capability Opportunities:",
+          ...oppTransversal.map((d) => `    • ${d.name}: ${Math.round(d.percentage)}%`)
+        ] : []),
+        "",
+        "──────────────────────────────────────────────────",
+        "Generated by Digital Vibes · digitalvibes.com"
+      ] : [
+        "DIGITAL VIBES — INFORME DE DIAGNÓSTICO",
+        "=======================================",
+        "",
+        `Usuario:  ${firstName} ${lastName}`,
+        `Email:    ${email}`,
+        `Empresa:  ${company}`,
+        `Fecha:    ${new Date().toLocaleString("es-AR")}`,
+        "",
+        `PUNTUACIÓN GLOBAL: ${globalPct}% — ${bandNames[bandKey]}`,
+        "",
+        "── PUNTUACIONES POR DIMENSIÓN ────────────────────",
+        ...dim.map((d) => `  ${d.name}: ${Math.round(d.percentage)}%`),
+        "",
+        "── 1. FORTALEZAS ─────────────────────────────────",
+        ...(strengths.length
+          ? strengths.map((d) => `  ✔ ${d.name}: ${Math.round(d.percentage)}%`)
+          : ["  Aún no hay fortalezas consolidadas. Prioriza las bases."]),
+        "",
+        "── 2. OPORTUNIDADES DE CRECIMIENTO ───────────────",
+        "",
+        "  2A. Oportunidades del circuito VIBE FLOW:",
+        ...(oppFlow.length
+          ? oppFlow.map((d) => `    • ${d.name}: ${Math.round(d.percentage)}%`)
+          : ["    Todas las etapas del circuito están por encima del 75 %."]),
+        ...(oppTransversal.length ? [
+          "",
+          "  2B. Oportunidades de capacidades transversales:",
+          ...oppTransversal.map((d) => `    • ${d.name}: ${Math.round(d.percentage)}%`)
+        ] : []),
+        "",
+        "─────────────────────────────────────────────────",
+        "Generado por Digital Vibes · digitalvibes.com"
+      ];
+
+      const reportText = lines.join("\n");
+
+      // ── Fire mailto: ────────────────────────────────────────────────────────
+      const subject = isEnglish
+        ? `Digital Vibes Diagnostic — ${firstName} ${lastName} (${company})`
+        : `Diagnóstico Digital Vibes — ${firstName} ${lastName} (${company})`;
+
+      const mailtoUrl = "mailto:scarselli.nicolas@gmail.com"
+        + "?subject=" + encodeURIComponent(subject)
+        + "&body="    + encodeURIComponent(reportText);
+
+      // Use a hidden link to avoid popup blockers in some browsers
+      const tempLink = document.createElement("a");
+      tempLink.href = mailtoUrl;
+      tempLink.style.display = "none";
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+
+      // ── Show success message + fallback copy block ───────────────────────────
+      status.innerHTML = "";
+
+      const successMsg = document.createElement("span");
+      successMsg.textContent = isEnglish
+        ? "✔ Your email client should open in a moment with the full report. If it does not, copy the report below and send it manually to scarselli.nicolas@gmail.com."
+        : "✔ Se debería abrir tu cliente de correo con el informe completo. Si no se abre automáticamente, copia el informe de abajo y envíalo manualmente a scarselli.nicolas@gmail.com.";
+      status.appendChild(successMsg);
+
+      // Fallback copyable block
+      const details = document.createElement("details");
+      details.style.marginTop = "1rem";
+      const summary = document.createElement("summary");
+      summary.style.cursor = "pointer";
+      summary.textContent = isEnglish ? "Show report text (copy manually)" : "Ver texto del informe (copiar manualmente)";
+      const pre = document.createElement("pre");
+      pre.style.cssText = "white-space:pre-wrap;font-size:.75rem;margin-top:.5rem;padding:.75rem;background:var(--color-surface-alt,#f5f5f5);border-radius:.5rem;overflow-x:auto;";
+      pre.textContent = reportText;
+      details.append(summary, pre);
+      status.appendChild(details);
     });
     assessment.querySelector("[data-assessment-restart]").addEventListener("click", () => {
       answers.fill(null);
@@ -1802,13 +1981,24 @@ if (typeof globalThis !== "undefined") {
       currentCalculation = null;
       assessment.querySelector("[data-assessment-global]").textContent = "0%";
       assessment.querySelector("[data-assessment-band]").textContent = isEnglish ? "Initial" : "Inicial";
-      assessment.querySelector("[data-assessment-chart]").replaceChildren();
+      const chart = assessment.querySelector("[data-assessment-chart]");
+      if (chart) chart.replaceChildren();
+      const chartFlow = assessment.querySelector("[data-assessment-chart-flow]");
+      if (chartFlow) chartFlow.replaceChildren();
+      const chartTransversal = assessment.querySelector("[data-assessment-chart-transversal]");
+      if (chartTransversal) chartTransversal.replaceChildren();
       assessment.querySelector("[data-assessment-dimension-scores]").replaceChildren();
       assessment.querySelector("[data-assessment-strengths]").replaceChildren();
-      assessment.querySelector("[data-assessment-risk-alerts]").replaceChildren();
-      assessment.querySelector("[data-assessment-opportunities]").replaceChildren();
+      const oppFlow = assessment.querySelector("[data-assessment-opportunities-flow]");
+      if (oppFlow) oppFlow.replaceChildren();
+      const oppTransversal = assessment.querySelector("[data-assessment-opportunities-transversal]");
+      if (oppTransversal) oppTransversal.replaceChildren();
+      const transversalWrapper = assessment.querySelector("[data-assessment-transversal-wrapper]");
+      if (transversalWrapper) transversalWrapper.hidden = true;
       const rm = assessment.querySelector("[data-assessment-roadmap]");
       if (rm) rm.replaceChildren();
+      // remove any calculation error message
+      assessment.querySelectorAll(".assessment-calc-error").forEach((el) => el.remove());
       assessment.querySelector("[data-assessment-map-form]")?.reset();
       assessment.querySelector("[data-assessment-form-status]").textContent = "";
       showView("intro");

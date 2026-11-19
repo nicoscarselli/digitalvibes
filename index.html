@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-  <script src="js/main.js?v=20261118-parte1-revisada-v6" defer></script>
+  <script src="js/main.js?v=20261119-fix-finish-btn" defer></script>
 </head>
 
 <body>
@@ -128,16 +128,25 @@
             </section>
             <div class="assessment-dimension-scores" data-assessment-dimension-scores></div>
             <section class="assessment-rules" aria-labelledby="assessment-strengths-title">
-              <h3 id="assessment-strengths-title">Fortalezas</h3>
+              <div class="assessment-section-intro">
+                <h3 id="assessment-strengths-title">1. Fortalezas</h3>
+                <p class="assessment-section-subtitle">Lo que tu negocio ya está haciendo bien dentro de VIBE FLOW.</p>
+              </div>
               <div data-assessment-strengths></div>
             </section>
-            <section class="assessment-rules" aria-labelledby="assessment-risks-title">
-              <h3 id="assessment-risks-title">Alertas esenciales de riesgo</h3>
-              <div data-assessment-risk-alerts></div>
-            </section>
-            <section class="assessment-rules" aria-labelledby="assessment-opportunities-title">
-              <h3 id="assessment-opportunities-title">Oportunidades de crecimiento</h3>
-              <div data-assessment-opportunities></div>
+            <section class="assessment-rules assessment-opportunities-section" aria-labelledby="assessment-opportunities-title">
+              <div class="assessment-section-intro">
+                <h3 id="assessment-opportunities-title">2. Oportunidades de crecimiento</h3>
+                <p class="assessment-section-subtitle">Dónde puede avanzar tu negocio y qué oportunidades tiene para seguir creciendo.</p>
+              </div>
+              <div class="assessment-opp-group">
+                <h4 class="assessment-opp-subtitle">2. A. Oportunidades del circuito VIBE FLOW</h4>
+                <div data-assessment-opportunities-flow></div>
+              </div>
+              <div class="assessment-opp-group" data-assessment-transversal-wrapper hidden>
+                <h4 class="assessment-opp-subtitle">2. B. Oportunidades de las capacidades transversales</h4>
+                <div data-assessment-opportunities-transversal></div>
+              </div>
             </section>
             <section class="assessment-map-request" aria-labelledby="assessment-map-request-title">
               <p class="assessment-eyebrow">SIGUIENTE PASO</p>
@@ -148,6 +157,18 @@
                 <div class="assessment-field">
                   <label for="assessment-email">Email</label>
                   <input id="assessment-email" name="email" type="email" autocomplete="email" required>
+                </div>
+                <div class="assessment-field">
+                  <label for="assessment-first-name">Nombre</label>
+                  <input id="assessment-first-name" name="firstName" type="text" autocomplete="given-name" required>
+                </div>
+                <div class="assessment-field">
+                  <label for="assessment-last-name">Apellido</label>
+                  <input id="assessment-last-name" name="lastName" type="text" autocomplete="family-name" required>
+                </div>
+                <div class="assessment-field">
+                  <label for="assessment-company">Empresa</label>
+                  <input id="assessment-company" name="company" type="text" autocomplete="organization" required>
                 </div>
                 <label class="assessment-consent">
                   <input name="mapConsent" type="checkbox" required>

@@ -461,15 +461,39 @@ footer { padding: 2rem 0; border-top: 1px solid var(--line); color: var(--mute);
   display: grid;
   gap: .65rem;
 }
-.assessment-rules h3 {
+.assessment-section-intro {
+  margin-bottom: .25rem;
+}
+.assessment-section-intro h3 {
   display: flex;
   align-items: center;
   gap: .5rem;
-  margin-bottom: 0;
-  font-size: 1.05rem;
-  font-weight: 600;
+  margin-bottom: .2rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--assessment-ink);
 }
-.assessment-rules > div {
+.assessment-section-subtitle {
+  margin: 0;
+  color: var(--assessment-muted);
+  font-size: .88rem;
+  line-height: 1.45;
+}
+.assessment-opp-group {
+  display: grid;
+  gap: .65rem;
+  margin-top: .6rem;
+}
+.assessment-opp-subtitle {
+  margin: 0;
+  color: var(--assessment-cyan);
+  font-size: .88rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.assessment-rules > div:not(.assessment-section-intro):not(.assessment-opp-group),
+.assessment-opp-group > div {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
   gap: .75rem;
